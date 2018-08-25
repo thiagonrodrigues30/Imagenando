@@ -1,0 +1,41 @@
+https://www.youtube.com/watch?v=s0lJkvhONHY
+Image Processing Tutorials #2 HTML5 Canvas & Context 2D Rendering Workflow
+
+https://stackoverflow.com/questions/3351122/what-is-the-best-javascript-image-processing-library
+stackoverflow processing libraries
+
+bitmap
+
+https://jsfiddle.net/user2314737/q1pezv2j/
+baixar imagem do site
+
+https://www.w3schools.com/graphics/canvas_reference.asp
+documentação canvas w3schools
+
+https://www.w3schools.com/jsref/canvas_getimagedata.asp
+canvas get image data
+
+Paul Gilbert - Fuzz Universe
+musica massa
+
+uint8clampedarray - os elementos do array tem 8 bits so, tem q ver como usar isso da melhor forma
+
+um cara explicando um pouco sobre isso
+https://stackoverflow.com/questions/19499500/canvas-getimagedata-for-optimal-performance-to-pull-out-all-data-or-one-at-a/19502117
+
+https://stackoverflow.com/questions/14424648/nice-ellipse-on-a-canvas/14429346#14429346
+
+
+->Como salvar a imagem depois de manipulada
+var canvas = document.getElementById("your_canvas");
+var image = document.getElementById("your_image");
+image.src = canvas.toDataURL("image/png");  //this converts your canvas into an image url
+image.width = canvas.width;
+image.height = canvas.height;﻿
+
+
+https://zellwk.com/blog/css-values-in-js/
+get width do css no arquivo
+
+https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a
+deep copy
