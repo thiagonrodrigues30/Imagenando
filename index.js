@@ -29,28 +29,19 @@ function loadImage(input){
 }
 
 function loadCanvas(img){
-  
-  //Pega o css em arquivo do elemento
-  var imgStyle = getComputedStyle(img); 
 
-  imgWidth = imgStyle.width.slice(0, -2);
-  imgHeight = imgStyle.height.slice(0, -2);
-
-  //Seta a largura e altura do canvas para serem iguais a da imagem exibida
-  c.width = imgWidth;
-  c.height = imgHeight;
+  setImageDimension(img);
 
   //Desenha a imagem no canvas
   ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
   
-
   //Estraindo a informação dos pixels da imagem q ja esta no canvas
   //Nao necessariamente precisa ser uma imagem, a funcao pega os pixels do q ta no canvas
   var imgData = ctx.getImageData(0, 0, imgWidth, imgHeight);
   //console.log(imgData);
 
   imgMatrixOriginal = parseToImageMatrix(imgData, imgWidth, imgHeight);
-  console.log(imgMatrixOriginal);
+  //console.log(imgMatrixOriginal);
 }
 
 
@@ -69,7 +60,7 @@ function parseToImageMatrix(imgData, imgWidth, imgHeight){
   }
 
   //Poe os pixels do array dentro de uma matriz equivalente a imagem
-  imgMatrix = [];
+  var imgMatrix = [];
   i = 0;
   for(var linha = 0; linha < imgHeight; linha++)
   {
@@ -122,7 +113,7 @@ function setLogFilter(){
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
 
-  console.log(newImgData);
+  //console.log(newImgData);
 
   ctx.putImageData(newImgData, 0, 0);
 }
@@ -148,13 +139,14 @@ function applyNegativeFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight){
 
   //Copia o valor da matriz para nao modificar a original
   var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+  //console.log(imgMatrix);
 
   for(var linha = 0; linha < imgHeight; linha++)
   {
     for(var coluna = 0; coluna < imgWidth; coluna++)
     {
       var currentPixel = imgMatrix[linha][coluna];
-
+      //console.log("loop-> linha: " + linha + " , coluna: " + coluna);
       currentPixel.r = 255 - currentPixel.r;
       currentPixel.g = 255 - currentPixel.g;
       currentPixel.b = 255 - currentPixel.b;
@@ -166,7 +158,10 @@ function applyNegativeFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight){
 }
 
 //Aplica o filtro logarítmico a matriz recebida
-function applyLogFilterMatrix(imgMatrix, imgWidth, imgHeight, c){
+function applyLogFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, c){
+
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
 
   for(var linha = 0; linha < imgHeight; linha++)
   {
@@ -185,7 +180,10 @@ function applyLogFilterMatrix(imgMatrix, imgWidth, imgHeight, c){
 }
 
 //Aplica o filtro de potência a matriz recebida
-function applyPowerFilterMatrix(imgMatrix, imgWidth, imgHeight, c, g){
+function applyPowerFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, c, g){
+
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
 
   for(var linha = 0; linha < imgHeight; linha++)
   {
@@ -204,6 +202,10 @@ function applyPowerFilterMatrix(imgMatrix, imgWidth, imgHeight, c, g){
 }
 
 function applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, bit) {
+
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
   for(var linha = 0; linha < imgHeight; linha++)
   {
     for(var coluna = 0; coluna < imgWidth; coluna++)
@@ -228,11 +230,79 @@ function transformPixelByBit(pixel, bit) {
 }
 
 window.onload = function () {
-  setOptionsHeight();
+  setContainersHeight();
 }
 
-function setOptionsHeight() {
+function setContainersHeight() {
   var optionsHeight = window.innerHeight - 40;
   document.getElementById("options-container").style.height = optionsHeight + "px";
+  document.getElementById("image-container").style.height = optionsHeight + "px";
 }
 
+function setImageDimension(img) {
+  //Ver qual lado da imagem é maior (altura ou largura) e exibe a imagem com base na maior dimensão
+  // isso vai fazer que o outro lado se adapte mantendo a proporção da imagem
+  // se ainda assim a imagem não ficar dentro do limite então a dimensão se baseia na menor dimensão
+  // caso o tamanho original da imagem não ultrapasse o maximo permitido pelo programa entao ela deve ser
+  // exibida no tamanho original
+
+  var imgOffset = 20;
+  var imageContainer = document.getElementById("image-container");
+  var containerStyle = getComputedStyle(imageContainer); 
+
+  var widthForUse = containerStyle.width.slice(0, -2) - (2 * imgOffset);
+  var heightForUse = containerStyle.height.slice(0, -2) - (2 * imgOffset);
+
+  //Verifica se a imagem cabe no container no tamanho original
+  if((img.naturalWidth <= widthForUse) && (img.naturalHeight <= heightForUse))
+  {
+    img.style.width = img.naturalWidth + "px";
+    img.style.height = img.naturalHeight + "px";
+  }
+  //  Se nao couber o tamanho deve ser tratado
+  else
+  {
+    var imgStyle = getComputedStyle(img); 
+
+    // Verifica se a imagem esta em landscape (deitada)
+    if(img.naturalWidth > img.naturalHeight)
+    {
+      img.style.height = "";
+      img.style.width = widthForUse + "px";
+
+      // Se a altura passar da permitida seta o tamanho com base na altura
+      if(imgStyle.height.slice(0, -2) > heightForUse)
+      {
+        img.style.width = "";
+        img.style.height = heightForUse + "px";
+      }
+
+    }
+    // Verifica se a imagem esta em portrait (em pe)
+    else
+    {
+      img.style.width = "";
+      img.style.height = heightForUse + "px";
+
+      // Se a largura passar da permitida seta o tamanho com base na largura
+      if(imgStyle.width.slice(0, -2) > widthForUse)
+      {
+        img.style.height = "";
+        img.style.width = widthForUse + "px";
+      }
+
+    }
+
+  }
+  
+  //Pega o css em arquivo do elemento
+  var imgStyle = getComputedStyle(img); 
+
+  // Pega a string retornada, transforma em numero e arredonda
+  imgWidth = Number(imgStyle.width.slice(0, -2)).toFixed(); 
+  imgHeight = Number(imgStyle.height.slice(0, -2)).toFixed();
+
+  //Seta a largura e altura do canvas para serem iguais a da imagem exibida
+  c.width = imgWidth;
+  c.height = imgHeight;
+}
