@@ -50,6 +50,7 @@ function loadCanvas(img){
   //console.log(imgData);
 
   imgMatrixOriginal = parseToImageMatrix(imgData, imgWidth, imgHeight);
+  console.log(imgMatrixOriginal);
 }
 
 
@@ -116,6 +117,32 @@ function setNegativeFilter(){
   ctx.putImageData(newImgData, 0, 0);
 }
 
+function setLogFilter(){
+  var newMatrix = applyLogFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, 30);
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  console.log(newImgData);
+
+  ctx.putImageData(newImgData, 0, 0);
+}
+
+function setPowerFilter(){
+  var newMatrix = applyPowerFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, 30, 0.4);
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+}
+
+function setBitPlaneFilter() {
+  var newMatrix = applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, 3);
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+}
+
 //Aplica o filtro de negativo a matriz recebida
 function applyNegativeFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight){
 
@@ -136,5 +163,67 @@ function applyNegativeFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight){
   }
 
   return imgMatrix;
+}
+
+//Aplica o filtro logarítmico a matriz recebida
+function applyLogFilterMatrix(imgMatrix, imgWidth, imgHeight, c){
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = imgMatrix[linha][coluna];
+
+      currentPixel.r = c * Math.log(1 + currentPixel.r);
+      currentPixel.g = c * Math.log(1 + currentPixel.g);
+      currentPixel.b = c * Math.log(1 + currentPixel.b);
+      currentPixel.a = 255;
+    }
+  }
+
+  return imgMatrix;
+}
+
+//Aplica o filtro de potência a matriz recebida
+function applyPowerFilterMatrix(imgMatrix, imgWidth, imgHeight, c, g){
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = imgMatrix[linha][coluna];
+
+      currentPixel.r = c * Math.pow(currentPixel.r, g);
+      currentPixel.g = c * Math.pow(currentPixel.g, g);
+      currentPixel.b = c * Math.pow(currentPixel.b, g);
+      currentPixel.a = 255;
+    }
+  }
+
+  return imgMatrix;
+}
+
+function applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, bit) {
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = imgMatrix[linha][coluna];
+
+      currentPixel.r = transformPixelByBit(currentPixel.r, bit);
+      currentPixel.g = transformPixelByBit(currentPixel.g, bit);
+      currentPixel.b = transformPixelByBit(currentPixel.b, bit);
+      currentPixel.a = 255;
+    }
+  }
+
+  return imgMatrix;
+}
+
+function transformPixelByBit(pixel, bit) {
+  var arrayBits = pixel.toString(2).split('');
+  arrayBits[bit] = 1 - arrayBits[bit-1];
+  var decimal = parseInt(arrayBits.join(''), 2);
+  return decimal;
 }
 
