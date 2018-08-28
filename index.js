@@ -227,3 +227,12 @@ function transformPixelByBit(pixel, bit) {
   return decimal;
 }
 
+window.onload = function () {
+  setOptionsHeight();
+}
+
+function setOptionsHeight() {
+  var optionsHeight = window.innerHeight - 40;
+  document.getElementById("options-container").style.height = optionsHeight + "px";
+}
+

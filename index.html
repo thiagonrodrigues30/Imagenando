@@ -4,23 +4,52 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Imagenando</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
     <link href="index.css" rel="stylesheet" type="text/css" />
   </head>
-  <body>
+  <body onresize="setOptionsHeight()" style="width: 100%;">
 
-    <canvas id="myCanvas" width="150" height="200"></canvas>
-
-    <img id="myImage" crossOrigin="Anonymous" alt="ponte" src="https://media.istockphoto.com/photos/old-railway-bridge-picture-id499292620?k=6&m=499292620&s=612x612&w=0&h=xyBXWyodC4oPxyx0OYp-92AFZsb3y4oDh0tx_HcBoYo=" >
-
-    <input type="file" id="imgFile" onchange="loadImage(this)" /></br></br>
-
-    <input type="button" value="Negativo" onclick="setNegativeFilter()" />
-
-    <input type="button" value="Logarítmico" onclick="setLogFilter()" />
     
-    <input type="button" value="Potência" onclick="setPowerFilter()" />
+    <div class="container-fluid">
 
-    <input type="button" value="Plano de Bits" onclick="setBitPlaneFilter()" />
+      <div class="row">
+
+        <div id="header">
+          <center>
+            <h3 id="title">Imagenando</h3>
+          </center>
+        </div>
+        
+        <!-- Container da imagen sendo editada -->
+        <div id="image-container" class="col-md-9"><br>
+
+          <canvas id="myCanvas" width="150" height="200"></canvas><br>
+
+          <img id="myImage" crossOrigin="Anonymous" alt="ponte" src="https://media.istockphoto.com/photos/old-railway-bridge-picture-id499292620?k=6&m=499292620&s=612x612&w=0&h=xyBXWyodC4oPxyx0OYp-92AFZsb3y4oDh0tx_HcBoYo=" style="display:none;">
+
+        </div>
+
+        <!-- Container dos filtros e suas opçoes -->
+        <div id="options-container" class="col-md-3"><br>
+          
+          <input type="file" id="imgFile" onchange="loadImage(this)" /></br></br>
+
+          <input type="button" value="Negativo" onclick="setNegativeFilter()" /><br><br>
+
+          <input type="button" value="Logarítmico" onclick="setLogFilter()" /><br><br>
+
+          <input type="button" value="Potência" onclick="setPowerFilter()" /><br><br>
+
+          <input type="button" value="Plano de Bits" onclick="setBitPlaneFilter()" /><br><br>
+
+        </div>
+
+      </div>
+    </div>
+
 
     <script src="classes.js"></script>
     <script src="index.js"></script>
