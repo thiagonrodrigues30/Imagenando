@@ -56,3 +56,10 @@ body {
 	margin-bottom: 0px;
 	border-left: 1px solid black;
 }
+
+#histograma {
+	width:256px;
+	height:150px; 
+	border: 1px solid black; 
+	background-color: white;
+}

@@ -5,6 +5,9 @@ var imgWidth;
 var imgHeight;
 
 var imgMatrixOriginal;
+var currentMatrix;
+
+var isGrayScale = false;
 
 
 // Carrega a imagem pela primeira vez
@@ -41,7 +44,9 @@ function loadCanvas(img){
   //console.log(imgData);
 
   imgMatrixOriginal = parseToImageMatrix(imgData, imgWidth, imgHeight);
+  currentMatrix = imgMatrixOriginal;
   //console.log(imgMatrixOriginal);
+  setHistogram();
 }
 
 
@@ -102,36 +107,44 @@ function parseToImageData(imgMatrix, imgWidth, imgHeight){
 function setNegativeFilter(){
 
   var newMatrix = applyNegativeFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight);
+  currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
 
   ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
 }
 
 function setLogFilter(){
   var newMatrix = applyLogFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, 30);
+  currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
 
   //console.log(newImgData);
 
   ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
 }
 
 function setPowerFilter(){
   var newMatrix = applyPowerFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, 30, 0.4);
+  currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
 
   ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
 }
 
 function setBitPlaneFilter() {
   var newMatrix = applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, 3);
+  currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
 
   ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
 }
 
 //Aplica o filtro de negativo a matriz recebida
@@ -305,4 +318,170 @@ function setImageDimension(img) {
   //Seta a largura e altura do canvas para serem iguais a da imagem exibida
   c.width = imgWidth;
   c.height = imgHeight;
+}
+
+function setHistogram() {
+  var histogram = document.getElementById('histograma');
+  var histCtx = histogram.getContext("2d");
+
+  var histogramWidth = getComputedStyle(histogram).width.slice(0, -2);
+  var histogramHeight = getComputedStyle(histogram).height.slice(0, -2);
+  
+  histogram.width = histogramWidth;
+  histogram.height = histogramHeight;
+
+  histTemp = countPixels();
+  var histR = histTemp[0];
+  var histG = histTemp[1];
+  var histB = histTemp[2];
+
+  // Pega valor do select para saber o tipo de histograma
+  // all, red, green, blue
+  var op = document.getElementById("histograma-op").value;
+
+  if(op == "all")
+  {
+    if(isGrayScale)
+    {
+      var components = [
+        {
+          color : "black",
+          hist: histR,
+          alpha: 1
+        }
+      ];
+    }
+    else
+    {
+      var components = [
+        {
+          color : "red",
+          hist: histR,
+          alpha: 0.7
+        },
+        {
+          color : "green",
+          hist: histG,
+          alpha: 0.7
+        },
+        {
+          color : "blue",
+          hist: histB,
+          alpha: 0.7
+        }
+      ];
+    }
+  }
+  else if(op == "red")
+  {
+    var components = [
+      {
+        color : "red",
+        hist: histR,
+        alpha: 1
+      }
+    ]; 
+  }
+  else if(op == "green")
+  {
+    var components = [
+      {
+        color : "green",
+        hist: histG,
+        alpha: 1
+      }
+    ]; 
+  }
+  else if(op == "blue")
+  {
+    var components = [
+      {
+        color : "blue",
+        hist: histB,
+        alpha: 1
+      }
+    ]; 
+  }
+
+  // Faz um array unico com todas as intensidades para poder calcular o valor maximo
+  var componentsConcat = [];
+  components.forEach(function (item, index) {
+    componentsConcat = componentsConcat.concat(item.hist);
+  });
+
+  
+
+  // Limpa o histograma antes de desenhar
+  histCtx.clearRect(0, 0, histogramWidth, histogramHeight);
+
+  var totalPixels = imgHeight * imgWidth;
+
+  // Calcula altura Y do histograma
+  var zoomY = 12;
+  var histogramY = totalPixels / zoomY;
+
+  var maxValue = Math.max(...componentsConcat);
+  
+  // Controla a altura do histograma para a cor de maior ocorrencia sempre caber nele
+  if(maxValue > histogramY)
+  {
+    while((histogramY < maxValue) && (zoomY >= 2))
+    {
+      zoomY--;
+      histogramY = totalPixels / zoomY;
+    }
+  }
+
+  // Percorre as componentes de cor selecionadas plotando o histograma
+  components.forEach(function (item, index) {
+    histCtx.beginPath();
+    histCtx.strokeStyle = item.color;
+    histCtx.globalAlpha = item.alpha;
+    var hist = item.hist;
+
+    for(var i = 0; i <= 255; i++)
+    {
+      var y = (histogramHeight * hist[i]) / histogramY; // Regra de 3 para encontrar o Y para a dada altura do histograma
+      y = histogramHeight - y.toFixed(); // Pq o y do canvas é de cima para baixo
+
+      histCtx.moveTo(i , histogramHeight);
+      histCtx.lineTo(i , y);
+    }
+
+    histCtx.stroke();
+
+  });
+
+}
+
+function countPixels() {
+  var histR = new Array(256);
+  var histG = new Array(256);
+  var histB = new Array(256);
+
+  histR.fill(0);
+  histG.fill(0);
+  histB.fill(0);
+
+  isGrayScale = true;
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = currentMatrix[linha][coluna];
+
+      histR[Math.min(currentPixel.r.toFixed(), 255)]++;
+      histG[Math.min(currentPixel.g.toFixed(), 255)]++;
+      histB[Math.min(currentPixel.b.toFixed(), 255)]++;
+
+      //Verifica se a imagem esta em escala de cinza
+      if(currentPixel.r != currentPixel.g || currentPixel.r != currentPixel.b)
+      {
+        isGrayScale = false;
+      }
+    }
+  }
+
+  return [histR, histG, histB];
 }

@@ -37,8 +37,27 @@
         <!-- Container dos filtros e suas opçoes -->
         <div id="options-container" class="col-md-3"><br>
           
-          <input type="file" id="imgFile" onchange="loadImage(this)" /></br></br>
+          <input type="file" id="imgFile" onchange="loadImage(this)" /></br>
 
+          <center>  
+
+            <div style="width: 256px;">
+              <h5>
+                <strong>Histograma</strong>
+                <select id="histograma-op" onchange="setHistogram()" style="margin-left: 30px;">
+                  <option value="all">Tudo</option>
+                  <option value="red">Vermelho</option>
+                  <option value="green">Verde</option>
+                  <option value="blue">Azul</option>
+                </select>
+              </h5>
+            </div>
+
+            <canvas id="histograma"></canvas>
+
+          </center>
+
+          <br>
           <input type="button" value="Negativo" onclick="setNegativeFilter()" /><br><br>
 
           <input type="button" value="Logarítmico" onclick="setLogFilter()" /><br><br>
