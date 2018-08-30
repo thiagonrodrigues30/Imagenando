@@ -477,8 +477,6 @@ function setHistogram() {
     componentsConcat = componentsConcat.concat(item.hist);
   });
 
-  
-
   // Limpa o histograma antes de desenhar
   histCtx.clearRect(0, 0, histogramWidth, histogramHeight);
 
@@ -552,4 +550,83 @@ function countPixels() {
   }
 
   return [histR, histG, histB];
+}
+
+function setHistogramEqualization() {
+
+  histTemp = countPixels();
+  var histR = histTemp[0];
+  var histG = histTemp[1];
+  var histB = histTemp[2];
+
+  if(isGrayScale)
+  {
+    var equalizedArray = getEqualizedArray(histR);
+    var newMatrix = applyEqualizationMatrix(currentMatrix, equalizedArray, equalizedArray, equalizedArray); 
+  }
+  else
+  {
+    var equalizedArrayR = getEqualizedArray(histR);
+    var equalizedArrayG = getEqualizedArray(histG);
+    var equalizedArrayB = getEqualizedArray(histB);
+    var newMatrix = applyEqualizationMatrix(currentMatrix, equalizedArrayR, equalizedArrayG, equalizedArrayB);
+  }
+
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+
+}
+
+function getEqualizedArray(hist) {
+
+  var totalPixels = imgHeight * imgWidth;
+
+  var probArray = new Array(256);
+  probArray.fill(0);
+
+  // Pega a probabilidade de ocorrencia de cara intensidade de cor
+  for(var i = 0; i < 256; i++)
+  {
+    probArray[i] = hist[i] / totalPixels;
+  }
+
+  var equalizedArray = new Array(256);
+  equalizedArray.fill(0);
+
+  // Calcula a nova cor respectiva de cada intensidade
+  for(var i = 0; i < 256; i++)
+  {
+    var sum = 0;
+    for(var j = 0; j <= i; j++)
+    {
+      sum += hist[j];
+    }
+
+    equalizedArray[i] = Math.round(((255 / totalPixels) * sum));
+  }
+
+  return equalizedArray;
+}
+
+function applyEqualizationMatrix(currentMatrix, equalizedR, equalizedG, equalizedB) {
+  
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(currentMatrix));
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = imgMatrix[linha][coluna];
+
+      currentPixel.r = equalizedR[Math.min(currentPixel.r.toFixed(), 255)];
+      currentPixel.g = equalizedG[Math.min(currentPixel.g.toFixed(), 255)];
+      currentPixel.b = equalizedB[Math.min(currentPixel.b.toFixed(), 255)];
+    }
+  }
+
+  return imgMatrix;
 }
