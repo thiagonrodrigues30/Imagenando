@@ -104,6 +104,13 @@ function parseToImageData(imgMatrix, imgWidth, imgHeight){
   return imgData;
 }
 
+function reset() {
+  currentMatrix = imgMatrixOriginal;
+  var newImgData = parseToImageData(imgMatrixOriginal, imgWidth, imgHeight);
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
 function setNegativeFilter(){
 
   var newMatrix = applyNegativeFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight);
@@ -121,8 +128,6 @@ function setLogFilter(){
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
 
-  //console.log(newImgData);
-
   ctx.putImageData(newImgData, 0, 0);
   setHistogram();
 }
@@ -138,7 +143,17 @@ function setPowerFilter(){
 }
 
 function setBitPlaneFilter() {
-  var newMatrix = applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, 3);
+  var newMatrix = applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, 8);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function setLinearByPartsFilter() {
+  var newMatrix = applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, 100, 50, 200, 230);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
@@ -235,11 +250,55 @@ function applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, bit) {
   return imgMatrix;
 }
 
+function applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, Xi, Yi, Xf, Yf) {
+
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+
+      var currentPixel = imgMatrix[linha][coluna];
+
+      if((linha >= 0 && linha < Xi) && (coluna >= 0 && coluna < Yi)) {
+        currentPixel.r = calculateEquation(currentPixel.r, 0, 0, Xi, Yi);
+        currentPixel.g = calculateEquation(currentPixel.g, 0, 0, Xi, Yi);
+        currentPixel.b = calculateEquation(currentPixel.b, 0, 0, Xi, Yi);
+        currentPixel.a = 255;
+      } else if((linha >= Xi && linha < Xf) && (coluna >= Yi && coluna < Yf)) {
+        currentPixel.r = calculateEquation(currentPixel.r, Xi, Yi, Xf, Yf);
+        currentPixel.g = calculateEquation(currentPixel.g, Xi, Yi, Xf, Yf);
+        currentPixel.b = calculateEquation(currentPixel.b, Xi, Yi, Xf, Yf);
+        currentPixel.a = 255;
+      } else {
+        currentPixel.r = calculateEquation(currentPixel.r, Xf, Yf, 255, 255);
+        currentPixel.g = calculateEquation(currentPixel.g, Xf, Yf, 255, 255);
+        currentPixel.b = calculateEquation(currentPixel.b, Xf, Yf, 255, 255);
+        currentPixel.a = 255;
+      }
+
+    }
+  }
+
+  return imgMatrix;
+}
+
 function transformPixelByBit(pixel, bit) {
   var arrayBits = pixel.toString(2).split('');
-  arrayBits[bit] = 1 - arrayBits[bit-1];
+  bit = arrayBits.length - bit;
+  for(var pos = 0; pos < arrayBits.length; pos++) {
+    if(pos != bit) {
+      arrayBits[pos] = 0;
+    }
+  }
   var decimal = parseInt(arrayBits.join(''), 2);
   return decimal;
+}
+
+function calculateEquation(pixel, Xi, Yi, Xf, Yf) {
+  return ( (Yf - Yi) / (Xf - Xi) ) * (pixel - Xi) + Yi;
 }
 
 window.onload = function () {
