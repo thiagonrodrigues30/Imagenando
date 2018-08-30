@@ -30,7 +30,7 @@
             <canvas id="myCanvas" width="150" height="200"></canvas>
           </center>
 
-          <img id="myImage" crossOrigin="Anonymous" alt="ponte" src="https://media.istockphoto.com/photos/old-railway-bridge-picture-id499292620?k=6&m=499292620&s=612x612&w=0&h=xyBXWyodC4oPxyx0OYp-92AFZsb3y4oDh0tx_HcBoYo=">
+          <img id="myImage" crossOrigin="Anonymous" alt="ponte" src="">
 
         </div>
 
@@ -58,19 +58,44 @@
 
           </center>
 
-          <br>
-          <input type="button" value="Negativo" onclick="setNegativeFilter()" /><br><br>
+          <center>
+            <h5><strong>Filtros</strong></h5>
+          </center>
+          <div class="list-group" style="max-height: 124px; overflow: hidden; overflow-y: scroll;">
+            <a href="#" class="list-group-item" id="negative-item" onclick="setNegativeFilter()">
+              Negativo 
+              <span class="params-icon" id="negative-icon"></span>
+            </a>
+            <a href="#" class="list-group-item" id="log-item" onclick="configLogInputs()">
+              Logarítmico
+              <span class="params-icon" id="log-icon"></span>
+            </a>
+            <a href="#" class="list-group-item" id="power-item" onclick="configPowerInputs()">
+              Potência
+               <span class="params-icon" id="power-icon"></span>
+            </a>
+            <a href="#" class="list-group-item" id="bit-plane-item" onclick="configBitPlaneInputs()">
+              Plano de Bits
+               <span class="params-icon" id="bit-plane-icon"></span>
+            </a>
+            <a href="#" class="list-group-item" id="linear-parts-item" onclick="setLinearByPartsFilter()">
+              Linear Por Partes
+               <span class="params-icon" id="linear-parts-icon"></span>
+            </a>
+            <a href="#" class="list-group-item" id="hist-equalization-item" onclick="setHistogramEqualization()">
+              Equalizar Histograma
+               <span class="params-icon" id="hist-equalization-icon"></span>
+            </a>
+          </div>
 
-          <input type="button" value="Logarítmico" onclick="setLogFilter()" /><br><br>
+          <center>
+            <h5><strong>Parametros</strong></h5>
+          </center>
+          
+          <div id="inputs-container">
 
-          <input type="button" value="Potência" onclick="setPowerFilter()" /><br><br>
-
-          <input type="button" value="Linear Por Partes" onclick="setLinearByPartsFilter()" /><br><br>
-
-          <input type="button" value="Plano de Bits" onclick="setBitPlaneFilter()" /><br><br>
-
-          <input type="button" value="Equalizar Histograma" onclick="setHistogramEqualization()" /><br><br>
-
+          </div>
+  
         </div>
 
       </div>

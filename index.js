@@ -9,6 +9,15 @@ var currentMatrix;
 
 var isGrayScale = false;
 
+// Contem o id do filtro dos parametros sendo exibidos
+var filterPreview = "";
+
+// Contem os ids dos filtros aplicados na imagem
+var appliedFilters = [];
+
+var paramsIcon = document.createElement("img");
+paramsIcon.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACaSURBVDhP3dFBCoJAFIDhMaUWgXSC6Dqto6vkCVy4FQxyWweodbRv3UVq5Tb/J6OIvaSZZT98CMO8GVFDATbYOlqjKcbbwxNde2ibxuzQNcEJ2kZNio8iXKAN9BX42gw3aIPiCPnoo81xx3D4jBA/tUCOg5VhCqfkxqtVyoJrL7Sv/5AF1/7ggAQVvA+QVpC/4X1A29I+BxlTAwB5WfLP2jdRAAAAAElFTkSuQmCC";
+
 
 // Carrega a imagem pela primeira vez
 function loadImage(input){
@@ -47,6 +56,12 @@ function loadCanvas(img){
   currentMatrix = imgMatrixOriginal;
   //console.log(imgMatrixOriginal);
   setHistogram();
+
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores
+  setFilterButtonBackground(-1);
 }
 
 
@@ -113,6 +128,13 @@ function reset() {
 
 function setNegativeFilter(){
 
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("negative-item");
+  
+  // Calcula a nova matriz e aplica o filtro
   var newMatrix = applyNegativeFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight);
   currentMatrix = newMatrix;
 
@@ -123,7 +145,14 @@ function setNegativeFilter(){
 }
 
 function setLogFilter(){
-  var newMatrix = applyLogFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, 30);
+
+  // Tira o background dos filtros anteriores e aplica no atual
+  setFilterButtonBackground("log-item");
+
+  // Pega o valor dos inputs
+  var intensidadeLog = document.getElementById("intensidade-log").value;
+
+  var newMatrix = applyLogFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, intensidadeLog);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
@@ -133,7 +162,16 @@ function setLogFilter(){
 }
 
 function setPowerFilter(){
-  var newMatrix = applyPowerFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, 30, 0.4);
+
+  // Tira o background dos filtros anteriores e aplica no atual
+  setFilterButtonBackground("power-item");
+
+  // Pega o valor dos inputs
+  var intensidadePower = document.getElementById("intensidade-power").value;
+  var gamaPower = document.getElementById("gama-power").value;
+
+
+  var newMatrix = applyPowerFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, intensidadePower, gamaPower);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
@@ -143,7 +181,14 @@ function setPowerFilter(){
 }
 
 function setBitPlaneFilter() {
-  var newMatrix = applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, 8);
+
+  // Tira o background dos filtros anteriores e aplica no atual
+  setFilterButtonBackground("bit-plane-item");
+
+  // Pega o valor dos inputs
+  var bitPlane = document.getElementById("bit-plane-input").value;
+
+  var newMatrix = applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, bitPlane);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
@@ -153,6 +198,7 @@ function setBitPlaneFilter() {
 }
 
 function setLinearByPartsFilter() {
+  
   var newMatrix = applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, 100, 50, 200, 230);
   currentMatrix = newMatrix;
 
@@ -554,6 +600,13 @@ function countPixels() {
 
 function setHistogramEqualization() {
 
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Seta o background dizendo q o filtro esta ativo tbm
+  document.getElementById("hist-equalization-item").classList.add("list-group-item-info");
+  appliedFilters.push("hist-equalization-item");
+
   histTemp = countPixels();
   var histR = histTemp[0];
   var histG = histTemp[1];
@@ -629,4 +682,229 @@ function applyEqualizationMatrix(currentMatrix, equalizedR, equalizedG, equalize
   }
 
   return imgMatrix;
+}
+
+function configLogInputs() {
+  /*
+  <p class="params-text" id="intensidade-text-log">Intensidade: 30</p>
+  <input type="range" min="0" max="255" value="30" class="slider" id="intensidade-log">
+
+  <br><br>
+  <center>
+    <input type="button" class="btn btn-default" value="Preview" >
+  </center>
+  */
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("log-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "intensidade-text-log";
+  pItensidade.textContent = "Intensidade: 30";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "0";
+  inputIntensidade.max = "255";
+  inputIntensidade.value = "30";
+  inputIntensidade.id = "intensidade-log";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Intensidade: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setLogFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+  
+}
+
+function setFilterButtonBackground(id) {
+
+  // Tira o background dos filtros anteriores e aplica no atual
+  appliedFilters.forEach(function (item, index) {
+    document.getElementById(item).classList.remove("list-group-item-info");
+  });
+  appliedFilters = [];
+
+  if(id != -1)
+  {
+    document.getElementById(id).classList.add("list-group-item-info");
+    appliedFilters.push(id);
+  }
+
+}
+
+function setParamsIcon(id) {
+
+  // Limpa os icones dos butoes
+  if(filterPreview != "")
+  {
+    document.getElementById(filterPreview).innerHTML = "";
+  }
+
+  // Se o id for uma string ele adiciona o icone nesse id, se for -1 ele nao adiciona nada
+  if(id != -1)
+  {
+    document.getElementById(id).appendChild(paramsIcon);
+    filterPreview = id;
+  }
+  
+  var inputsContainer = document.getElementById("inputs-container");
+  inputsContainer.innerHTML = "";
+}
+
+function configPowerInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("power-icon");
+
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "intensidade-text-power";
+  pItensidade.textContent = "Intensidade: 30";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "0";
+  inputIntensidade.max = "255";
+  inputIntensidade.value = "30";
+  inputIntensidade.id = "intensidade-power";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Intensidade: " + this.value;
+  }
+
+
+  // Cria o elemento p de label do input de gama
+  var pGama = document.createElement("p");
+  pGama.classList.add("params-text");
+  pGama.id = "gama-text-power";
+  pGama.textContent = "Gama: 0.4";
+
+  // Cria o range para input de gama
+  var inputGama = document.createElement("input");
+  inputGama.type = "range";
+  inputGama.classList.add("slider");
+  inputGama.min = "0";
+  inputGama.max = "15";
+  inputGama.step = "0.1";
+  inputGama.value = "0.4";
+  inputGama.id = "gama-power";
+
+  inputGama.oninput = function() {
+    pGama.textContent = "Gama: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setPowerFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+
+  inputsContainer.appendChild(pGama);
+  inputsContainer.appendChild(inputGama);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+  inputsContainer.appendChild(document.createElement("br"));
+  
+}
+
+function configBitPlaneInputs() {
+  
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("bit-plane-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pPlanoBits = document.createElement("p");
+  pPlanoBits.classList.add("params-text");
+  pPlanoBits.id = "bit-plane-text-log";
+  pPlanoBits.textContent = "Plano de Bit: 3";
+
+  // Cria o range para input da intensidade
+  var inputPlanoBits = document.createElement("input");
+  inputPlanoBits.type = "range";
+  inputPlanoBits.classList.add("slider");
+  inputPlanoBits.min = "1";
+  inputPlanoBits.max = "8";
+  inputPlanoBits.step = "1";
+  inputPlanoBits.value = "3";
+  inputPlanoBits.id = "bit-plane-input";
+
+  inputPlanoBits.oninput = function() {
+    pPlanoBits.textContent = "Plano de Bit: " + this.value;
+  }
+
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setBitPlaneFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pPlanoBits);
+  inputsContainer.appendChild(inputPlanoBits);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+
 }
