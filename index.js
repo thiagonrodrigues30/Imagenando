@@ -296,7 +296,7 @@ function applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, bit) {
   return imgMatrix;
 }
 
-function applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, Xi, Yi, Xf, Yf) {
+function applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, Xo, Yo, X, Y) {
 
   //Copia o valor da matriz para nao modificar a original
   var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
@@ -308,28 +308,28 @@ function applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, Xi, Yi
 
       var currentPixel = imgMatrix[linha][coluna];
 
-      if(currentPixel.r <= Xi) {
-        currentPixel.r = parseInt(calculateEquation(currentPixel.r, 0, 0, Xi, Yi).toFixed());
-      } else if(currentPixel.r > Xi && currentPixel.r <= Xf) {
-        currentPixel.r = parseInt(calculateEquation(currentPixel.r, Xi, Yi, Xf, Yf).toFixed());
-      } else if(currentPixel.r > Xf && currentPixel.r <= 255) {
-        currentPixel.r = parseInt(calculateEquation(currentPixel.r, Xf, Yf, 255, 255).toFixed());
+      if(currentPixel.r <= Xo) {
+        currentPixel.r = calculateEquation(currentPixel.r, 0, 0, Xo, Yo);
+      } else if(currentPixel.r > Xo && currentPixel.r <= X) {
+        currentPixel.r = calculateEquation(currentPixel.r, Xo, Yo, X, Y);
+      } else if(currentPixel.r > X && currentPixel.r <= 255) {
+        currentPixel.r = calculateEquation(currentPixel.r, X, Y, 255, 255);
       }
 
-      if(currentPixel.g <= Xi) {
-        currentPixel.g = parseInt(calculateEquation(currentPixel.g, 0, 0, Xi, Yi).toFixed());
-      } else if(currentPixel.g > Xi && currentPixel.g <= Xf) {
-        currentPixel.g = parseInt(calculateEquation(currentPixel.g, Xi, Yi, Xf, Yf).toFixed());
-      } else if(currentPixel.g > Xf && currentPixel.g <= 255) {
-        currentPixel.g = parseInt(calculateEquation(currentPixel.g, Xf, Yf, 255, 255).toFixed());
+      if(currentPixel.g <= Xo) {
+        currentPixel.g = calculateEquation(currentPixel.g, 0, 0, Xo, Yo);
+      } else if(currentPixel.g > Xo && currentPixel.g <= X) {
+        currentPixel.g = calculateEquation(currentPixel.g, Xo, Yo, X, Y);
+      } else if(currentPixel.g > X && currentPixel.g <= 255) {
+        currentPixel.g = calculateEquation(currentPixel.g, X, Y, 255, 255);
       }
 
-      if(currentPixel.b <= Xi) {
-        currentPixel.b = parseInt(calculateEquation(currentPixel.b, 0, 0, Xi, Yi).toFixed());
-      } else if(currentPixel.b > Xi && currentPixel.b <= Xf) {
-        currentPixel.b = parseInt(calculateEquation(currentPixel.b, Xi, Yi, Xf, Yf).toFixed());
-      } else if(currentPixel.b > Xf && currentPixel.b <= 255) {
-        currentPixel.b = parseInt(calculateEquation(currentPixel.b, Xf, Yf, 255, 255).toFixed());
+      if(currentPixel.b <= Xo) {
+        currentPixel.b = calculateEquation(currentPixel.b, 0, 0, Xo, Yo);
+      } else if(currentPixel.b > Xo && currentPixel.b <= X) {
+        currentPixel.b = calculateEquation(currentPixel.b, Xo, Yo, X, Y);
+      } else if(currentPixel.b > X && currentPixel.b <= 255) {
+        currentPixel.b = calculateEquation(currentPixel.b, X, Y, 255, 255);
       }
 
       currentPixel.a = 255;
@@ -352,8 +352,8 @@ function transformPixelByBit(pixel, bit) {
   return decimal;
 }
 
-function calculateEquation(pixel, Xi, Yi, Xf, Yf) {
-  return ( (Yf - Yi) / (Xf - Xi) ) * (pixel - Xi) + Yi;
+function calculateEquation(pixel, Xo, Yo, X, Y) {
+  return ( (Y - Yo) / (X - Xo) ) * (pixel - Xo) + Yo;
 }
 
 window.onload = function () {
