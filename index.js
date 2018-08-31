@@ -262,22 +262,31 @@ function applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, Xi, Yi
 
       var currentPixel = imgMatrix[linha][coluna];
 
-      if((linha >= 0 && linha < Xi) && (coluna >= 0 && coluna < Yi)) {
-        currentPixel.r = calculateEquation(currentPixel.r, 0, 0, Xi, Yi);
-        currentPixel.g = calculateEquation(currentPixel.g, 0, 0, Xi, Yi);
-        currentPixel.b = calculateEquation(currentPixel.b, 0, 0, Xi, Yi);
-        currentPixel.a = 255;
-      } else if((linha >= Xi && linha < Xf) && (coluna >= Yi && coluna < Yf)) {
-        currentPixel.r = calculateEquation(currentPixel.r, Xi, Yi, Xf, Yf);
-        currentPixel.g = calculateEquation(currentPixel.g, Xi, Yi, Xf, Yf);
-        currentPixel.b = calculateEquation(currentPixel.b, Xi, Yi, Xf, Yf);
-        currentPixel.a = 255;
-      } else {
-        currentPixel.r = calculateEquation(currentPixel.r, Xf, Yf, 255, 255);
-        currentPixel.g = calculateEquation(currentPixel.g, Xf, Yf, 255, 255);
-        currentPixel.b = calculateEquation(currentPixel.b, Xf, Yf, 255, 255);
-        currentPixel.a = 255;
+      if(currentPixel.r <= Xi) {
+        currentPixel.r = parseInt(calculateEquation(currentPixel.r, 0, 0, Xi, Yi).toFixed());
+      } else if(currentPixel.r > Xi && currentPixel.r <= Xf) {
+        currentPixel.r = parseInt(calculateEquation(currentPixel.r, Xi, Yi, Xf, Yf).toFixed());
+      } else if(currentPixel.r > Xf && currentPixel.r <= 255) {
+        currentPixel.r = parseInt(calculateEquation(currentPixel.r, Xf, Yf, 255, 255).toFixed());
       }
+
+      if(currentPixel.g <= Xi) {
+        currentPixel.g = parseInt(calculateEquation(currentPixel.g, 0, 0, Xi, Yi).toFixed());
+      } else if(currentPixel.g > Xi && currentPixel.g <= Xf) {
+        currentPixel.g = parseInt(calculateEquation(currentPixel.g, Xi, Yi, Xf, Yf).toFixed());
+      } else if(currentPixel.g > Xf && currentPixel.g <= 255) {
+        currentPixel.g = parseInt(calculateEquation(currentPixel.g, Xf, Yf, 255, 255).toFixed());
+      }
+
+      if(currentPixel.b <= Xi) {
+        currentPixel.b = parseInt(calculateEquation(currentPixel.b, 0, 0, Xi, Yi).toFixed());
+      } else if(currentPixel.b > Xi && currentPixel.b <= Xf) {
+        currentPixel.b = parseInt(calculateEquation(currentPixel.b, Xi, Yi, Xf, Yf).toFixed());
+      } else if(currentPixel.b > Xf && currentPixel.b <= 255) {
+        currentPixel.b = parseInt(calculateEquation(currentPixel.b, Xf, Yf, 255, 255).toFixed());
+      }
+
+      currentPixel.a = 255;
 
     }
   }
