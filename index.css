@@ -76,6 +76,35 @@ body {
 	position: absolute; 
 	right: 15px;
 }
+
+.linear-parts-inputs-div {
+	color: white; 
+	display: inline-block; 
+	margin-left: 60px;
+}
+
+.linear-parts-inputs {
+	width: 50px; 
+	color: black; 
+	border-radius: 5px;
+}
+
+.linear-partes-input-label {
+	display: inline-block;
+}
+
+#input-file-label {
+	font-weight: 100;
+	border: 1px solid #C0C0C0;
+	border-radius: 1px;
+	background-color: #E9E9E9;
+	padding-left: 7px;
+	padding-right: 7px; 
+	padding-top: 2px;
+	padding-bottom: 2px;
+
+}
+
 /**** slider *****/
 /*
 .slidecontainer {

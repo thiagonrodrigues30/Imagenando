@@ -124,6 +124,12 @@ function reset() {
   var newImgData = parseToImageData(imgMatrixOriginal, imgWidth, imgHeight);
   ctx.putImageData(newImgData, 0, 0);
   setHistogram();
+
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores
+  setFilterButtonBackground(-1);
 }
 
 function setNegativeFilter(){
@@ -198,8 +204,17 @@ function setBitPlaneFilter() {
 }
 
 function setLinearByPartsFilter() {
+
+  // Tira o background dos filtros anteriores e aplica no atual
+  setFilterButtonBackground("linear-parts-item");
+
+  // Pega o valor dos inputs
+  var xi = Number(document.getElementById("point1-x-linear-parts").value);
+  var yi = Number(document.getElementById("point1-y-linear-parts").value);
+  var xf = Number(document.getElementById("point2-x-linear-parts").value);
+  var yf = Number(document.getElementById("point2-y-linear-parts").value);
   
-  var newMatrix = applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, 100, 50, 200, 230);
+  var newMatrix = applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, xi, yi, xf, yf);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
@@ -906,5 +921,123 @@ function configBitPlaneInputs() {
   center.appendChild(btnLogPreview);
 
   inputsContainer.appendChild(center);
+
+}
+
+function configLinearByPartsInputs() {
+  /*
+  <p class="params-text linear-partes-input-label" >Primeiro ponto:</p> 
+  <div class="linear-parts-inputs-div">
+  ( 
+  <input type="number" id="point1-x-linear-parts" class="linear-parts-inputs" min="0" max="255" value="100"> ,
+  <input type="number" id="point1-y-linear-parts" class="linear-parts-inputs" min="0" max="255" value="150">
+  )
+  </div><br><br>
+  */
+  
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("linear-parts-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do ponto 1
+  var pPrimeiro = document.createElement("p");
+  pPrimeiro.classList.add("params-text");
+  pPrimeiro.classList.add("linear-partes-input-label");
+  pPrimeiro.textContent = "Primeiro ponto:";
+
+  // Cria os inputs para as coordenadas do ponto 1
+  var inputP1X = document.createElement("input");
+  inputP1X.type = "number";
+  inputP1X.classList.add("linear-parts-inputs");
+  inputP1X.min = "0";
+  inputP1X.max = "255";
+  inputP1X.step = "1";
+  inputP1X.value = "100";
+  inputP1X.id = "point1-x-linear-parts";
+
+  var inputP1Y = document.createElement("input");
+  inputP1Y.type = "number";
+  inputP1Y.classList.add("linear-parts-inputs");
+  inputP1Y.min = "0";
+  inputP1Y.max = "255";
+  inputP1Y.step = "1";
+  inputP1Y.value = "50";
+  inputP1Y.id = "point1-y-linear-parts";
+
+  var divInputsP1 = document.createElement("div");
+  divInputsP1.classList.add("linear-parts-inputs-div");
+
+  inputsContainer.appendChild(pPrimeiro);
+  inputsContainer.appendChild(divInputsP1);
+
+  // Insere os elementos na div dos inputs
+  divInputsP1.insertAdjacentHTML('afterbegin', "( ");
+  divInputsP1.appendChild(inputP1X);
+  inputP1X.insertAdjacentHTML('afterend', " , ");
+  divInputsP1.appendChild(inputP1Y);
+  divInputsP1.insertAdjacentHTML('beforeend', " )");
+
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+
+  // Cria o elemento p de label do ponto 2
+  var pSegundo = document.createElement("p");
+  pSegundo.classList.add("params-text");
+  pSegundo.classList.add("linear-partes-input-label");
+  pSegundo.textContent = "Segundo ponto:";
+
+  // Cria os inputs para as coordenadas do ponto 2
+  var inputP2X = document.createElement("input");
+  inputP2X.type = "number";
+  inputP2X.classList.add("linear-parts-inputs");
+  inputP2X.min = "0";
+  inputP2X.max = "255";
+  inputP2X.step = "1";
+  inputP2X.value = "200";
+  inputP2X.id = "point2-x-linear-parts";
+
+  var inputP2Y = document.createElement("input");
+  inputP2Y.type = "number";
+  inputP2Y.classList.add("linear-parts-inputs");
+  inputP2Y.min = "0";
+  inputP2Y.max = "255";
+  inputP2Y.step = "1";
+  inputP2Y.value = "230";
+  inputP2Y.id = "point2-y-linear-parts";
+
+  var divInputsP2 = document.createElement("div");
+  divInputsP2.classList.add("linear-parts-inputs-div");
+
+  inputsContainer.appendChild(pSegundo);
+  inputsContainer.appendChild(divInputsP2);
+
+  // Insere os elementos na div dos inputs
+  divInputsP2.insertAdjacentHTML('afterbegin', "( ");
+  divInputsP2.appendChild(inputP2X);
+  inputP2X.insertAdjacentHTML('afterend', " , ");
+  divInputsP2.appendChild(inputP2Y);
+  divInputsP2.insertAdjacentHTML('beforeend', " )");
+
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setLinearByPartsFilter();
+  }
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+  inputsContainer.appendChild(document.createElement("br"));
 
 }

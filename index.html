@@ -37,8 +37,10 @@
         <!-- Container dos filtros e suas opçoes -->
         <div id="options-container" class="col-md-3"><br>
           
-          <input type="file" id="imgFile" onchange="loadImage(this)" /></br>
-          <input type="button" value="Resetar Imagem" onclick="reset()" /><br><br>
+          <label for='imgFile' id="input-file-label" style="display: inline-block;">Escolher arquivo</label>
+          <input type="button" value="Resetar Imagem" onclick="reset()" style="display: inline-block; position: absolute; right: 15px;"/><br><br>
+          <input type="file" id="imgFile" style="display: none;" onchange="loadImage(this)" /></br>
+          
 
           <center>  
 
@@ -78,7 +80,7 @@
               Plano de Bits
                <span class="params-icon" id="bit-plane-icon"></span>
             </a>
-            <a href="#" class="list-group-item" id="linear-parts-item" onclick="setLinearByPartsFilter()">
+            <a href="#" class="list-group-item" id="linear-parts-item" onclick="configLinearByPartsInputs()">
               Linear Por Partes
                <span class="params-icon" id="linear-parts-icon"></span>
             </a>
