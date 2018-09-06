@@ -1,4 +1,4 @@
-https://www.youtube.com/watch?v=s0lJkvhONHY
+﻿https://www.youtube.com/watch?v=s0lJkvhONHY
 Image Processing Tutorials #2 HTML5 Canvas & Context 2D Rendering Workflow
 
 https://stackoverflow.com/questions/3351122/what-is-the-best-javascript-image-processing-library
@@ -39,3 +39,4 @@ get width do css no arquivo
 
 https://medium.com/@gamshan001/javascript-deep-copy-for-array-and-object-97e3d4bc401a
 deep copy
+https://en.wikipedia.org/wiki/Kernel_(image_processing)
