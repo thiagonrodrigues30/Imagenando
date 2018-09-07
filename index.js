@@ -544,6 +544,34 @@ function setConvolutionFilter(){
   setHistogram();
 }
 
+function setAverageFilter(){
+
+  // Limpa o container de parametros e tira os icones de parametros
+  //setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  //setFilterButtonBackground("negative-item");
+
+
+  // Cria a matriz de convulocao por enquanto
+  var convolutionMatrix = [];
+  convolutionMatrix.push([0, 0, 0, 0, 0]);
+  convolutionMatrix.push([0, 0, 1, 0, 0]);
+  convolutionMatrix.push([0, 1, -4, 1, 0]);
+  convolutionMatrix.push([0, 0, 1, 0, 0]);
+  convolutionMatrix.push([0, 0, 0, 0, 0]);
+
+  
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyAverageMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
 function setWeightedAverageFilter(){
 
   // Limpa o container de parametros e tira os icones de parametros

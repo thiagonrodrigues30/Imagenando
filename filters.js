@@ -281,6 +281,60 @@ function applyConvolutionMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolut
   return imgMatrix;
 }
 
+function applyAverageMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix) {
+
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var sumR = 0;
+      var sumG = 0;
+      var sumB = 0;
+
+      // Percorre a matriz de convoluacao
+      for(var linhaConv = 0; linhaConv < 5; linhaConv++)
+      {
+        for(var colunaConv = 0; colunaConv < 5; colunaConv++)
+        {
+          var linhaIndex = linha - 2 + linhaConv;
+          var colunaIndex = coluna - 2 + colunaConv;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            sumR += convolutionMatrix[linhaConv][colunaConv] * currentPixel.r;
+            sumG += convolutionMatrix[linhaConv][colunaConv] * currentPixel.g;
+            sumB += convolutionMatrix[linhaConv][colunaConv] * currentPixel.b;
+          }
+
+        }
+      }
+
+      var divider = 1;
+      var currentPixel = imgMatrix[linha][coluna];
+
+      if(is3x3(convolutionMatrix)) {
+        divider = 9;
+      } else {
+        divider = 25;
+      }
+
+      currentPixel.r = sumR / divider;
+      currentPixel.g = sumG / divider;
+      currentPixel.b = sumB / divider;
+
+
+    }
+  }  
+
+  return imgMatrix;
+}
+
 function applyWeightedAverageMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix) {
 
   //Copia o valor da matriz para nao modificar a original
