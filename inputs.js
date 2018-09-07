@@ -170,6 +170,56 @@ function configPowerInputs() {
   
 }
 
+function configThresholdInputs() {
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("threshold-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "intensidade-text-threshold";
+  pItensidade.textContent = "Intensidade: 0";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "0";
+  inputIntensidade.max = "255";
+  inputIntensidade.value = "0";
+  inputIntensidade.id = "intensidade-threshold";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Intensidade: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnThresholdPreview = document.createElement("input");
+  btnThresholdPreview.type = "button";
+  btnThresholdPreview.classList.add("btn")
+  btnThresholdPreview.classList.add("btn-default");
+  btnThresholdPreview.value = "Preview";
+
+  btnThresholdPreview.onclick = function () {
+    setThresholdFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnThresholdPreview);
+
+  inputsContainer.appendChild(center);
+  
+}
+
 function configBitPlaneInputs() {
   
   // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos

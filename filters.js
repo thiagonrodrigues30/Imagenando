@@ -65,6 +65,42 @@ function applyPowerFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, c, g){
   return imgMatrix;
 }
 
+function applyThresholdFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, l){
+
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = imgMatrix[linha][coluna];
+
+      if(currentPixel.r >= l) {
+        currentPixel.r = 255;
+      } else {
+        currentPixel.r = 0;
+      }
+
+      if(currentPixel.g >= l) {
+        currentPixel.g = 255;
+      } else {
+        currentPixel.g = 0;
+      }
+
+      if(currentPixel.b >= l) {
+        currentPixel.b = 255;
+      } else {
+        currentPixel.b = 0;
+      }
+
+      currentPixel.a = 255;
+    }
+  }
+
+  return imgMatrix;
+}
+
 function applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, bit) {
 
   //Copia o valor da matriz para nao modificar a original

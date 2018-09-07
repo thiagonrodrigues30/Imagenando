@@ -185,6 +185,23 @@ function setPowerFilter(){
   setHistogram();
 }
 
+function setThresholdFilter(){
+
+  // Tira o background dos filtros anteriores e aplica no atual
+  setFilterButtonBackground("threshold-item");
+
+  // Pega o valor dos inputs
+  var intensidadeThreshold = document.getElementById("intensidade-threshold").value;
+
+  var newMatrix = applyThresholdFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, intensidadeThreshold);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
 function setBitPlaneFilter() {
 
   // Tira o background dos filtros anteriores e aplica no atual
