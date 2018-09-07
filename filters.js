@@ -146,6 +146,57 @@ function calculateEquation(pixel, Xo, Yo, X, Y) {
   return ( (Y - Yo) / (X - Xo) ) * (pixel - Xo) + Yo;
 }
 
+function applyEqualizationMatrix(currentMatrix, equalizedR, equalizedG, equalizedB) {
+  
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(currentMatrix));
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = imgMatrix[linha][coluna];
+
+      currentPixel.r = equalizedR[Math.min(currentPixel.r.toFixed(), 255)];
+      currentPixel.g = equalizedG[Math.min(currentPixel.g.toFixed(), 255)];
+      currentPixel.b = equalizedB[Math.min(currentPixel.b.toFixed(), 255)];
+    }
+  }
+
+  return imgMatrix;
+}
+
+function getEqualizedArray(hist) {
+
+  var totalPixels = imgHeight * imgWidth;
+
+  var probArray = new Array(256);
+  probArray.fill(0);
+
+  // Pega a probabilidade de ocorrencia de cara intensidade de cor
+  for(var i = 0; i < 256; i++)
+  {
+    probArray[i] = hist[i] / totalPixels;
+  }
+
+  var equalizedArray = new Array(256);
+  equalizedArray.fill(0);
+
+  // Calcula a nova cor respectiva de cada intensidade
+  for(var i = 0; i < 256; i++)
+  {
+    var sum = 0;
+    for(var j = 0; j <= i; j++)
+    {
+      sum += hist[j];
+    }
+
+    equalizedArray[i] = Math.round(((255 / totalPixels) * sum));
+  }
+
+  return equalizedArray;
+}
+
 function applyConvolutionMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix) {
 
   //Copia o valor da matriz para nao modificar a original
@@ -194,7 +245,7 @@ function applyConvolutionMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolut
   return imgMatrix;
 }
 
-function applyWeightedAvarageMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix) {
+function applyWeightedAverageMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix) {
 
   //Copia o valor da matriz para nao modificar a original
   var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
@@ -253,53 +304,86 @@ function applyWeightedAvarageMatrix(imgMatrixOriginal, imgWidth, imgHeight, conv
   return imgMatrix;
 }
 
-function applyEqualizationMatrix(currentMatrix, equalizedR, equalizedG, equalizedB) {
+function is3x3(convolutionMatrix) {
   
-  //Copia o valor da matriz para nao modificar a original
-  var imgMatrix = JSON.parse(JSON.stringify(currentMatrix));
+  if(convolutionMatrix[0][0] == 0 && convolutionMatrix[0][1] == 0 && convolutionMatrix[0][2] == 0 && convolutionMatrix[0][3] == 0 &&
+    convolutionMatrix[0][4] == 0 && convolutionMatrix[4][0] == 0 && convolutionMatrix[4][1] == 0 && convolutionMatrix[4][2] == 0 &&
+    convolutionMatrix[4][3] == 0 && convolutionMatrix[4][4] == 0 && convolutionMatrix[1][0] == 0 && convolutionMatrix[2][0] == 0 &&
+    convolutionMatrix[3][0] == 0 && convolutionMatrix[1][4] == 0 && convolutionMatrix[2][4] == 0 && convolutionMatrix[3][4] == 0 )
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
 
+function applyMedianMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodSize) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
   for(var linha = 0; linha < imgHeight; linha++)
   {
     for(var coluna = 0; coluna < imgWidth; coluna++)
     {
+      var elementsR = [];
+      var elementsG = [];
+      var elementsB = [];
+
+      // Percorre a matriz de convoluacao
+      for(var linhaConv = 0; linhaConv < neighborhoodSize; linhaConv++)
+      {
+        for(var colunaConv = 0; colunaConv < neighborhoodSize; colunaConv++)
+        {
+          var borderDist = (neighborhoodSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaConv;
+          var colunaIndex = coluna - borderDist + colunaConv;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            elementsR.push(currentPixel.r);
+            elementsG.push(currentPixel.g);
+            elementsB.push(currentPixel.b);
+          }
+
+        }
+      }
+
+      // Ordena os elementos
+      elementsR.sort(function(a, b){return a-b});
+      elementsG.sort(function(a, b){return a-b});
+      elementsB.sort(function(a, b){return a-b});
+
+      // Verifica se quantidade de elementos é par
+      if((elementsR.length % 2) == 0)
+      {
+        var mid = elementsR.length / 2;
+        var medianR = Math.round( Number(( elementsR[mid] + elementsR[mid + 1] ) / 2) );
+        var medianG = Math.round( Number(( elementsG[mid] + elementsG[mid + 1] ) / 2) );
+        var medianB = Math.round( Number(( elementsB[mid] + elementsB[mid + 1] ) / 2) );
+      }
+      // Ou se é impar
+      else
+      {
+        var mid = ((elementsR.length - 1) / 2) + 1;
+        var medianR = elementsR[mid];
+        var medianG = elementsG[mid];
+        var medianB = elementsB[mid];
+      }
+
       var currentPixel = imgMatrix[linha][coluna];
 
-      currentPixel.r = equalizedR[Math.min(currentPixel.r.toFixed(), 255)];
-      currentPixel.g = equalizedG[Math.min(currentPixel.g.toFixed(), 255)];
-      currentPixel.b = equalizedB[Math.min(currentPixel.b.toFixed(), 255)];
+      currentPixel.r = medianR;
+      currentPixel.g = medianG;
+      currentPixel.b = medianB;
+
     }
   }
-
+ 
+ 
   return imgMatrix;
-}
-
-function getEqualizedArray(hist) {
-
-  var totalPixels = imgHeight * imgWidth;
-
-  var probArray = new Array(256);
-  probArray.fill(0);
-
-  // Pega a probabilidade de ocorrencia de cara intensidade de cor
-  for(var i = 0; i < 256; i++)
-  {
-    probArray[i] = hist[i] / totalPixels;
-  }
-
-  var equalizedArray = new Array(256);
-  equalizedArray.fill(0);
-
-  // Calcula a nova cor respectiva de cada intensidade
-  for(var i = 0; i < 256; i++)
-  {
-    var sum = 0;
-    for(var j = 0; j <= i; j++)
-    {
-      sum += hist[j];
-    }
-
-    equalizedArray[i] = Math.round(((255 / totalPixels) * sum));
-  }
-
-  return equalizedArray;
 }

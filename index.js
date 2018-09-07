@@ -527,7 +527,7 @@ function setConvolutionFilter(){
   setHistogram();
 }
 
-function setWeightedAvarageFilter(){
+function setWeightedAverageFilter(){
 
   // Limpa o container de parametros e tira os icones de parametros
   //setParamsIcon(-1);
@@ -546,7 +546,7 @@ function setWeightedAvarageFilter(){
 
   
   // Calcula a nova matriz e aplica o filtro
-  var newMatrix = applyWeightedAvarageMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix);
+  var newMatrix = applyWeightedAverageMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
@@ -555,3 +555,20 @@ function setWeightedAvarageFilter(){
   setHistogram();
 }
 
+function setMedianFilter(){
+
+  // Limpa o container de parametros e tira os icones de parametros
+  //setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  //setFilterButtonBackground("negative-item");
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyMedianMatrix(imgMatrixOriginal, imgWidth, imgHeight, 3);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
