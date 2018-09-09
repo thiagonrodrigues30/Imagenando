@@ -439,7 +439,6 @@ function applyMedianMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodS
             elementsG.push(currentPixel.g);
             elementsB.push(currentPixel.b);
           }
-
         }
       }
 
@@ -466,14 +465,10 @@ function applyMedianMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodS
       }
 
       var currentPixel = imgMatrix[linha][coluna];
-
       currentPixel.r = medianR;
       currentPixel.g = medianG;
       currentPixel.b = medianB;
-
     }
-  }
- 
- 
+  } 
   return imgMatrix;
 }

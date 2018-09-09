@@ -390,3 +390,268 @@ function configLinearByPartsInputs() {
   inputsContainer.appendChild(document.createElement("br"));
 
 }
+
+function configConvolutionMatrixInputs() {
+  setParamsIcon("convolution-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria os inputs para as coordenadas da linha 1
+  var inputP1V = document.createElement("input");
+  inputP1V.type = "number";
+  inputP1V.classList.add("convolution-inputs");
+  inputP1V.step = "1";
+  inputP1V.value = "0";
+  inputP1V.id = "point1-v-convolution";
+
+  var inputP1W = document.createElement("input");
+  inputP1W.type = "number";
+  inputP1W.classList.add("convolution-inputs");
+  inputP1W.step = "1";
+  inputP1W.value = "0";
+  inputP1W.id = "point1-w-convolution";
+
+  var inputP1X = document.createElement("input");
+  inputP1X.type = "number";
+  inputP1X.classList.add("convolution-inputs");
+  inputP1X.step = "1";
+  inputP1X.value = "0";
+  inputP1X.id = "point1-x-convolution";
+
+  var inputP1Y = document.createElement("input");
+  inputP1Y.type = "number";
+  inputP1Y.classList.add("convolution-inputs");
+  inputP1Y.step = "1";
+  inputP1Y.value = "0";
+  inputP1Y.id = "point1-y-convolution";
+
+  var inputP1Z = document.createElement("input");
+  inputP1Z.type = "number";
+  inputP1Z.classList.add("convolution-inputs");
+  inputP1Z.step = "1";
+  inputP1Z.value = "0";
+  inputP1Z.id = "point1-z-convolution";
+
+  var divInputsP1 = document.createElement("div");
+  divInputsP1.classList.add("convolution-inputs-div");
+
+  inputsContainer.appendChild(divInputsP1);
+
+  // Insere os elementos na div dos inputs
+  divInputsP1.appendChild(inputP1V);
+  divInputsP1.appendChild(inputP1W);
+  divInputsP1.appendChild(inputP1X);
+  divInputsP1.appendChild(inputP1Y);
+  divInputsP1.appendChild(inputP1Z);
+
+  // Cria os inputs para as coordenadas da linha 2
+  var inputP2V = document.createElement("input");
+  inputP2V.type = "number";
+  inputP2V.classList.add("convolution-inputs");
+  inputP2V.step = "1";
+  inputP2V.value = "0";
+  inputP2V.id = "point2-v-convolution";
+
+  var inputP2W = document.createElement("input");
+  inputP2W.type = "number";
+  inputP2W.classList.add("convolution-inputs");
+  inputP2W.step = "1";
+  inputP2W.value = "0";
+  inputP2W.id = "point2-w-convolution";
+
+  var inputP2X = document.createElement("input");
+  inputP2X.type = "number";
+  inputP2X.classList.add("convolution-inputs");
+  inputP2X.step = "1";
+  inputP2X.value = "0";
+  inputP2X.id = "point2-x-convolution";
+
+  var inputP2Y = document.createElement("input");
+  inputP2Y.type = "number";
+  inputP2Y.classList.add("convolution-inputs");
+  inputP2Y.step = "1";
+  inputP2Y.value = "0";
+  inputP2Y.id = "point2-y-convolution";
+
+  var inputP2Z = document.createElement("input");
+  inputP2Z.type = "number";
+  inputP2Z.classList.add("convolution-inputs");
+  inputP2Z.step = "1";
+  inputP2Z.value = "0";
+  inputP2Z.id = "point2-z-convolution";
+
+  var divInputsP2 = document.createElement("div");
+  divInputsP2.classList.add("convolution-inputs-div");
+
+  inputsContainer.appendChild(divInputsP2);
+
+  // Insere os elementos na div dos inputs
+  divInputsP2.appendChild(inputP2V);
+  divInputsP2.appendChild(inputP2W);
+  divInputsP2.appendChild(inputP2X);
+  divInputsP2.appendChild(inputP2Y);
+  divInputsP2.appendChild(inputP2Z);
+
+  // Cria os inputs para as coordenadas da linha 3
+  var inputP3V = document.createElement("input");
+  inputP3V.type = "number";
+  inputP3V.classList.add("convolution-inputs");
+  inputP3V.step = "1";
+  inputP3V.value = "0";
+  inputP3V.id = "point3-v-convolution";
+
+  var inputP3W = document.createElement("input");
+  inputP3W.type = "number";
+  inputP3W.classList.add("convolution-inputs");
+  inputP3W.step = "1";
+  inputP3W.value = "0";
+  inputP3W.id = "point3-w-convolution";
+
+  var inputP3X = document.createElement("input");
+  inputP3X.type = "number";
+  inputP3X.classList.add("convolution-inputs");
+  inputP3X.step = "1";
+  inputP3X.value = "0";
+  inputP3X.id = "point3-x-convolution";
+
+  var inputP3Y = document.createElement("input");
+  inputP3Y.type = "number";
+  inputP3Y.classList.add("convolution-inputs");
+  inputP3Y.step = "1";
+  inputP3Y.value = "0";
+  inputP3Y.id = "point3-y-convolution";
+
+  var inputP3Z = document.createElement("input");
+  inputP3Z.type = "number";
+  inputP3Z.classList.add("convolution-inputs");
+  inputP3Z.step = "1";
+  inputP3Z.value = "0";
+  inputP3Z.id = "point3-z-convolution";
+
+  var divInputsP3 = document.createElement("div");
+  divInputsP3.classList.add("convolution-inputs-div");
+
+  inputsContainer.appendChild(divInputsP3);
+
+  // Insere os elementos na div dos inputs
+  divInputsP3.appendChild(inputP3V);
+  divInputsP3.appendChild(inputP3W);
+  divInputsP3.appendChild(inputP3X);
+  divInputsP3.appendChild(inputP3Y);
+  divInputsP3.appendChild(inputP3Z);
+
+  // Cria os inputs para as coordenadas da linha 4
+  var inputP4V = document.createElement("input");
+  inputP4V.type = "number";
+  inputP4V.classList.add("convolution-inputs");
+  inputP4V.step = "1";
+  inputP4V.value = "0";
+  inputP4V.id = "point4-v-convolution";
+
+  var inputP4W = document.createElement("input");
+  inputP4W.type = "number";
+  inputP4W.classList.add("convolution-inputs");
+  inputP4W.step = "1";
+  inputP4W.value = "0";
+  inputP4W.id = "point4-w-convolution";
+
+  var inputP4X = document.createElement("input");
+  inputP4X.type = "number";
+  inputP4X.classList.add("convolution-inputs");
+  inputP4X.step = "1";
+  inputP4X.value = "0";
+  inputP4X.id = "point4-x-convolution";
+
+  var inputP4Y = document.createElement("input");
+  inputP4Y.type = "number";
+  inputP4Y.classList.add("convolution-inputs");
+  inputP4Y.step = "1";
+  inputP4Y.value = "0";
+  inputP4Y.id = "point4-y-convolution";
+
+  var inputP4Z = document.createElement("input");
+  inputP4Z.type = "number";
+  inputP4Z.classList.add("convolution-inputs");
+  inputP4Z.step = "1";
+  inputP4Z.value = "0";
+  inputP4Z.id = "point4-z-convolution";
+
+  var divInputsP4 = document.createElement("div");
+  divInputsP4.classList.add("convolution-inputs-div");
+
+  inputsContainer.appendChild(divInputsP4);
+
+  // Insere os elementos na div dos inputs
+  divInputsP4.appendChild(inputP4V);
+  divInputsP4.appendChild(inputP4W);
+  divInputsP4.appendChild(inputP4X);
+  divInputsP4.appendChild(inputP4Y);
+  divInputsP4.appendChild(inputP4Z);
+
+  // Cria os inputs para as coordenadas da linha 5
+  var inputP5V = document.createElement("input");
+  inputP5V.type = "number";
+  inputP5V.classList.add("convolution-inputs");
+  inputP5V.step = "1";
+  inputP5V.value = "0";
+  inputP5V.id = "point5-v-convolution";
+
+  var inputP5W = document.createElement("input");
+  inputP5W.type = "number";
+  inputP5W.classList.add("convolution-inputs");
+  inputP5W.step = "1";
+  inputP5W.value = "0";
+  inputP5W.id = "point5-w-convolution";
+
+  var inputP5X = document.createElement("input");
+  inputP5X.type = "number";
+  inputP5X.classList.add("convolution-inputs");
+  inputP5X.step = "1";
+  inputP5X.value = "0";
+  inputP5X.id = "point5-x-convolution";
+
+  var inputP5Y = document.createElement("input");
+  inputP5Y.type = "number";
+  inputP5Y.classList.add("convolution-inputs");
+  inputP5Y.step = "1";
+  inputP5Y.value = "0";
+  inputP5Y.id = "point5-y-convolution";
+
+  var inputP5Z = document.createElement("input");
+  inputP5Z.type = "number";
+  inputP5Z.classList.add("convolution-inputs");
+  inputP5Z.step = "1";
+  inputP5Z.value = "0";
+  inputP5Z.id = "point5-z-convolution";
+
+  var divInputsP5 = document.createElement("div");
+  divInputsP5.classList.add("convolution-inputs-div");
+
+  inputsContainer.appendChild(divInputsP5);
+
+  // Insere os elementos na div dos inputs
+  divInputsP5.appendChild(inputP5V);
+  divInputsP5.appendChild(inputP5W);
+  divInputsP5.appendChild(inputP5X);
+  divInputsP5.appendChild(inputP5Y);
+  divInputsP5.appendChild(inputP5Z);
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.style.marginTop='10px';
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setConvolutionFilter();
+  }
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+  inputsContainer.appendChild(document.createElement("br"));
+
+}

@@ -524,14 +524,49 @@ function setConvolutionFilter(){
   // Limpa o background dos filtros anteriores e seta nesse
   //setFilterButtonBackground("negative-item");
 
-
+  // Tira o background dos filtros anteriores e aplica no atual
+  setFilterButtonBackground("convolution-item");
+  
+  // Pega o valor dos inputs
   // Cria a matriz de convulocao por enquanto
   var convolutionMatrix = [];
-  convolutionMatrix.push([0, 0, 0, 0, 0]);
-  convolutionMatrix.push([0, 0, 1, 0, 0]);
-  convolutionMatrix.push([0, 1, -4, 1, 0]);
-  convolutionMatrix.push([0, 0, 1, 0, 0]);
-  convolutionMatrix.push([0, 0, 0, 0, 0]);
+  convolutionMatrix.push([Number(document.getElementById("point1-v-convolution").value), 
+                          Number(document.getElementById("point1-w-convolution").value), 
+                          Number(document.getElementById("point1-x-convolution").value), 
+                          Number(document.getElementById("point1-y-convolution").value), 
+                          Number(document.getElementById("point1-z-convolution").value)]);
+
+  convolutionMatrix.push([Number(document.getElementById("point2-v-convolution").value), 
+                          Number(document.getElementById("point2-w-convolution").value), 
+                          Number(document.getElementById("point2-x-convolution").value), 
+                          Number(document.getElementById("point2-y-convolution").value), 
+                          Number(document.getElementById("point2-z-convolution").value)]);  
+
+  convolutionMatrix.push([Number(document.getElementById("point3-v-convolution").value), 
+                          Number(document.getElementById("point3-w-convolution").value), 
+                          Number(document.getElementById("point3-x-convolution").value), 
+                          Number(document.getElementById("point3-y-convolution").value), 
+                          Number(document.getElementById("point3-z-convolution").value)]);  
+                      
+  convolutionMatrix.push([Number(document.getElementById("point4-v-convolution").value), 
+                          Number(document.getElementById("point4-w-convolution").value), 
+                          Number(document.getElementById("point4-x-convolution").value), 
+                          Number(document.getElementById("point4-y-convolution").value), 
+                          Number(document.getElementById("point4-z-convolution").value)]);  
+
+  convolutionMatrix.push([Number(document.getElementById("point5-v-convolution").value), 
+                          Number(document.getElementById("point5-w-convolution").value), 
+                          Number(document.getElementById("point5-x-convolution").value), 
+                          Number(document.getElementById("point5-y-convolution").value), 
+                          Number(document.getElementById("point5-z-convolution").value)]);  
+
+  // Cria a matriz de convulocao por enquanto
+  // var convolutionMatrix = [];
+  // convolutionMatrix.push([0, 0, 0, 0, 0]);
+  // convolutionMatrix.push([0, 0, 1, 0, 0]);
+  // convolutionMatrix.push([0, 1, -4, 1, 0]);
+  // convolutionMatrix.push([0, 0, 1, 0, 0]);
+  // convolutionMatrix.push([0, 0, 0, 0, 0]);
 
   
   // Calcula a nova matriz e aplica o filtro
