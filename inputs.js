@@ -391,8 +391,8 @@ function configLinearByPartsInputs() {
 
 }
 
-function configConvolutionMatrixInputs() {
-  setParamsIcon("convolution-icon");
+function configConvolutionMatrixInputs(applyFilterFun, iconId) {
+  setParamsIcon(iconId);
   
   var inputsContainer = document.getElementById("inputs-container");
 
@@ -645,7 +645,7 @@ function configConvolutionMatrixInputs() {
   btnLogPreview.value = "Preview";
 
   btnLogPreview.onclick = function () {
-    setConvolutionFilter();
+    applyFilterFun();
   }
 
   var center = document.createElement("center");
@@ -654,4 +654,55 @@ function configConvolutionMatrixInputs() {
   inputsContainer.appendChild(center);
   inputsContainer.appendChild(document.createElement("br"));
 
+}
+
+function configMedianMatrixInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("median-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "vizinhanca-text-median";
+  pItensidade.textContent = "Tamanho da Vizinhança: 3";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "3";
+  inputIntensidade.max = "25";
+  inputIntensidade.value = "3";
+  inputIntensidade.step = "2";
+  inputIntensidade.id = "vizinhanca-median";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Tamanho da Vizinhança: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setMedianFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
 }

@@ -187,13 +187,14 @@ function setPowerFilter(){
 
 function setThresholdFilter(){
 
-  // Tira o background dos filtros anteriores e aplica no atual
-  setFilterButtonBackground("threshold-item");
+  // Seta o background dizendo q o filtro esta ativo tbm
+  document.getElementById("threshold-item").classList.add("list-group-item-info");
+  appliedFilters.push("threshold-item");
 
   // Pega o valor dos inputs
   var intensidadeThreshold = document.getElementById("intensidade-threshold").value;
 
-  var newMatrix = applyThresholdFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, intensidadeThreshold);
+  var newMatrix = applyThresholdFilterMatrix(currentMatrix, imgWidth, imgHeight, intensidadeThreshold);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
@@ -516,17 +517,7 @@ function setHistogramEqualization() {
 
 }
 
-function setConvolutionFilter(){
-
-  // Limpa o container de parametros e tira os icones de parametros
-  //setParamsIcon(-1);
-
-  // Limpa o background dos filtros anteriores e seta nesse
-  //setFilterButtonBackground("negative-item");
-
-  // Tira o background dos filtros anteriores e aplica no atual
-  setFilterButtonBackground("convolution-item");
-  
+function getConvMatrix() {
   // Pega o valor dos inputs
   // Cria a matriz de convulocao por enquanto
   var convolutionMatrix = [];
@@ -558,7 +549,19 @@ function setConvolutionFilter(){
                           Number(document.getElementById("point5-w-convolution").value), 
                           Number(document.getElementById("point5-x-convolution").value), 
                           Number(document.getElementById("point5-y-convolution").value), 
-                          Number(document.getElementById("point5-z-convolution").value)]);  
+                          Number(document.getElementById("point5-z-convolution").value)]); 
+
+  return convolutionMatrix;
+}
+
+function setConvolutionFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("convolution-item");
+  
+  // Pega o valor dos inputs
+  // Cria a matriz de convulocao por enquanto
+  var convolutionMatrix = getConvMatrix();
 
   // Cria a matriz de convulocao por enquanto
   // var convolutionMatrix = [];
@@ -581,20 +584,19 @@ function setConvolutionFilter(){
 
 function setAverageFilter(){
 
-  // Limpa o container de parametros e tira os icones de parametros
-  //setParamsIcon(-1);
-
   // Limpa o background dos filtros anteriores e seta nesse
-  //setFilterButtonBackground("negative-item");
-
+  setFilterButtonBackground("average-item");
 
   // Cria a matriz de convulocao por enquanto
-  var convolutionMatrix = [];
+  var convolutionMatrix = getConvMatrix();
+
+  /*
   convolutionMatrix.push([0, 0, 0, 0, 0]);
   convolutionMatrix.push([0, 0, 1, 0, 0]);
   convolutionMatrix.push([0, 1, -4, 1, 0]);
   convolutionMatrix.push([0, 0, 1, 0, 0]);
   convolutionMatrix.push([0, 0, 0, 0, 0]);
+  */
 
   
   // Calcula a nova matriz e aplica o filtro
@@ -609,20 +611,19 @@ function setAverageFilter(){
 
 function setWeightedAverageFilter(){
 
-  // Limpa o container de parametros e tira os icones de parametros
-  //setParamsIcon(-1);
-
   // Limpa o background dos filtros anteriores e seta nesse
-  //setFilterButtonBackground("negative-item");
+  setFilterButtonBackground("weighted-average-item");
 
 
   // Cria a matriz de convulocao por enquanto
-  var convolutionMatrix = [];
+  var convolutionMatrix = getConvMatrix();
+  /*
   convolutionMatrix.push([0, 0, 0, 0, 0]);
   convolutionMatrix.push([0, 1, 2, 1, 0]);
   convolutionMatrix.push([0, 2, 4, 2, 0]);
   convolutionMatrix.push([0, 1, 2, 1, 0]);
   convolutionMatrix.push([0, 0, 0, 0, 0]);
+  */
 
   
   // Calcula a nova matriz e aplica o filtro
@@ -637,18 +638,71 @@ function setWeightedAverageFilter(){
 
 function setMedianFilter(){
 
-  // Limpa o container de parametros e tira os icones de parametros
-  //setParamsIcon(-1);
-
   // Limpa o background dos filtros anteriores e seta nesse
-  //setFilterButtonBackground("negative-item");
+  setFilterButtonBackground("median-item");
+
+  var vizinhancaSize = document.getElementById("vizinhanca-median").value;
 
   // Calcula a nova matriz e aplica o filtro
-  var newMatrix = applyMedianMatrix(imgMatrixOriginal, imgWidth, imgHeight, 3);
+  var newMatrix = applyMedianMatrix(imgMatrixOriginal, imgWidth, imgHeight, vizinhancaSize);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
 
   ctx.putImageData(newImgData, 0, 0);
   setHistogram();
+}
+
+function setLaplacianFilter() {
+
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("laplacian-item");
+
+  // Cria a matriz de convulocao por enquanto
+  var convolutionMatrix = [];
+  convolutionMatrix.push([0, 0, 0, 0, 0]);
+  convolutionMatrix.push([0, 0, 1, 0, 0]);
+  convolutionMatrix.push([0, 1, -4, 1, 0]);
+  convolutionMatrix.push([0, 0, 1, 0, 0]);
+  convolutionMatrix.push([0, 0, 0, 0, 0]);
+  
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyConvolutionMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+
+}
+
+function setSobelFilter() {
+
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("sobel-item");
+
+  // Cria a matriz de convulocao por enquanto
+  var convolutionMatrix = [];
+  convolutionMatrix.push([0, 0, 0, 0, 0]);
+  convolutionMatrix.push([0, -1, 0, 1, 0]);
+  convolutionMatrix.push([0, -2, 0, 2, 0]);
+  convolutionMatrix.push([0, -1, 0, 1, 0]);
+  convolutionMatrix.push([0, 0, 0, 0, 0]);
+  
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyConvolutionMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+
 }

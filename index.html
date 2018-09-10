@@ -92,22 +92,31 @@
               Equalizar Histograma
                <span class="params-icon" id="hist-equalization-icon"></span>
             </a>
-            <a href="#" class="list-group-item" id="convolution-item" onclick="configConvolutionMatrixInputs()">
+            <a href="#" class="list-group-item" id="convolution-item" onclick="configConvolutionMatrixInputs(setConvolutionFilter, 'convolution-icon')">
               Convolução
                <span class="params-icon" id="convolution-icon"></span>
             </a>
-            <a href="#" class="list-group-item" id="average-item" onclick="setAverageFilter()">
+            <a href="#" class="list-group-item" id="average-item" onclick="configConvolutionMatrixInputs(setAverageFilter, 'average-icon')">
               Média
                <span class="params-icon" id="average-icon"></span>
             </a>
-            <a href="#" class="list-group-item" id="weighted-average-item" onclick="setWeightedAverageFilter()">
+            <a href="#" class="list-group-item" id="weighted-average-item" onclick="configConvolutionMatrixInputs(setWeightedAverageFilter, 'weighted-average-icon')">
               Média Ponderada
                <span class="params-icon" id="weighted-average-icon"></span>
             </a>
-            <a href="#" class="list-group-item" id="median-item" onclick="setMedianFilter()">
+            <a href="#" class="list-group-item" id="median-item" onclick="configMedianMatrixInputs()">
               Mediana
                <span class="params-icon" id="median-icon"></span>
             </a>
+            <a href="#" class="list-group-item" id="laplacian-item" onclick="setLaplacianFilter()">
+              Laplaciano
+               <span class="params-icon" id="laplacian-icon"></span>
+            </a>
+            <a href="#" class="list-group-item" id="sobel-item" onclick="setSobelFilter()">
+              Sobel
+               <span class="params-icon" id="sobel-icon"></span>
+            </a>
+
           </div>
 
           <center>
