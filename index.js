@@ -706,3 +706,133 @@ function setSobelFilter() {
   setHistogram();
 
 }
+
+function setHighBoostFilter() {
+
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("high-boost-item");
+
+  // Cria a matriz de convulocao por enquanto
+  var convolutionMatrix = [];
+  convolutionMatrix.push([0, 0, 0, 0, 0]);
+  convolutionMatrix.push([0, 0, -1, 0, 0]);
+  convolutionMatrix.push([0, -1, 5, -1, 0]);
+  convolutionMatrix.push([0, 0, -1, 0, 0]);
+  convolutionMatrix.push([0, 0, 0, 0, 0]);
+  
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyConvolutionMatrix(imgMatrixOriginal, imgWidth, imgHeight, convolutionMatrix);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+
+}
+
+function setGeometricMeanFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("geometric-mean-item");
+
+  var vizinhancaSize = document.getElementById("vizinhanca-geometric-mean").value;
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyGeometricMeanMatrix(imgMatrixOriginal, imgWidth, imgHeight, vizinhancaSize);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function setHarmonicMeanFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("harmonic-mean-item");
+
+  var vizinhancaSize = document.getElementById("vizinhanca-harmonic-mean").value;
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyHarmonicMeanMatrix(imgMatrixOriginal, imgWidth, imgHeight, vizinhancaSize);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function setCounterHarmonicMeanFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("counter-harmonic-mean-item");
+
+  var vizinhancaSize = document.getElementById("vizinhanca-counter-harmonic-mean").value;
+  var potencia = document.getElementById("potencia-counter-harmonic-mean").value;
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyCounterHarmonicMeanMatrix(imgMatrixOriginal, imgWidth, imgHeight, vizinhancaSize, potencia);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function setMaximumFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("maximum-item");
+
+  var vizinhancaSize = document.getElementById("vizinhanca-maximum").value;
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyMaximumMatrix(imgMatrixOriginal, imgWidth, imgHeight, vizinhancaSize);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function setMinimumFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("minimum-item");
+
+  var vizinhancaSize = document.getElementById("vizinhanca-minimum").value;
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyMinimumMatrix(imgMatrixOriginal, imgWidth, imgHeight, vizinhancaSize);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function setMidpointFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("midpoint-item");
+
+  var vizinhancaSize = document.getElementById("vizinhanca-midpoint").value;
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyMidpointMatrix(imgMatrixOriginal, imgWidth, imgHeight, vizinhancaSize);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}

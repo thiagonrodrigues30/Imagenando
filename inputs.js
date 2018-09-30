@@ -706,3 +706,331 @@ function configMedianMatrixInputs() {
 
   inputsContainer.appendChild(center);
 }
+
+function configGeometricMeanInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("geometric-mean-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "vizinhanca-text-geometric-mean";
+  pItensidade.textContent = "Tamanho da Vizinhança: 3";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "3";
+  inputIntensidade.max = "25";
+  inputIntensidade.value = "3";
+  inputIntensidade.step = "2";
+  inputIntensidade.id = "vizinhanca-geometric-mean";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Tamanho da Vizinhança: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setGeometricMeanFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+}
+
+function configHarmonicMeanInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("harmonic-mean-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "vizinhanca-text-harmonic-mean";
+  pItensidade.textContent = "Tamanho da Vizinhança: 3";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "3";
+  inputIntensidade.max = "25";
+  inputIntensidade.value = "3";
+  inputIntensidade.step = "2";
+  inputIntensidade.id = "vizinhanca-harmonic-mean";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Tamanho da Vizinhança: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setHarmonicMeanFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+}
+
+function configCounterHarmonicMeanInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("counter-harmonic-mean-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "vizinhanca-text-counter-harmonic-mean";
+  pItensidade.textContent = "Tamanho da Vizinhança: 3";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "3";
+  inputIntensidade.max = "25";
+  inputIntensidade.value = "3";
+  inputIntensidade.step = "2";
+  inputIntensidade.id = "vizinhanca-counter-harmonic-mean";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Tamanho da Vizinhança: " + this.value;
+  }
+
+  // Cria o elemento p de label do input intensidade
+  var pPotencia = document.createElement("p");
+  pPotencia.classList.add("params-text");
+  pPotencia.id = "potencia-text-counter-harmonic-mean";
+  pPotencia.textContent = "Expoente da Potência: 0";
+
+  // Cria o range para input da intensidade
+  var inputPotencia = document.createElement("input");
+  inputPotencia.type = "range";
+  inputPotencia.classList.add("slider");
+  inputPotencia.min = "0";
+  inputPotencia.value = "0";
+  inputPotencia.step = "1";
+  inputPotencia.id = "potencia-counter-harmonic-mean";
+
+  inputPotencia.oninput = function() {
+    pPotencia.textContent = "Expoente da Potência: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setCounterHarmonicMeanFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(pPotencia);
+  inputsContainer.appendChild(inputPotencia);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+}
+
+function configMaximumInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("maximum-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "vizinhanca-text-maximum";
+  pItensidade.textContent = "Tamanho da Vizinhança: 3";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "3";
+  inputIntensidade.max = "25";
+  inputIntensidade.value = "3";
+  inputIntensidade.step = "2";
+  inputIntensidade.id = "vizinhanca-maximum";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Tamanho da Vizinhança: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setMaximumFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+}
+
+function configMinimumInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("minimum-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "vizinhanca-text-minimum";
+  pItensidade.textContent = "Tamanho da Vizinhança: 3";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "3";
+  inputIntensidade.max = "25";
+  inputIntensidade.value = "3";
+  inputIntensidade.step = "2";
+  inputIntensidade.id = "vizinhanca-minimum";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Tamanho da Vizinhança: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setMinimumFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+}
+
+function configMidpointInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("midpoint-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pItensidade = document.createElement("p");
+  pItensidade.classList.add("params-text");
+  pItensidade.id = "vizinhanca-text-midpoint";
+  pItensidade.textContent = "Tamanho da Vizinhança: 3";
+
+  // Cria o range para input da intensidade
+  var inputIntensidade = document.createElement("input");
+  inputIntensidade.type = "range";
+  inputIntensidade.classList.add("slider");
+  inputIntensidade.min = "3";
+  inputIntensidade.max = "25";
+  inputIntensidade.value = "3";
+  inputIntensidade.step = "2";
+  inputIntensidade.id = "vizinhanca-midpoint";
+
+  inputIntensidade.oninput = function() {
+    pItensidade.textContent = "Tamanho da Vizinhança: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnLogPreview = document.createElement("input");
+  btnLogPreview.type = "button";
+  btnLogPreview.classList.add("btn")
+  btnLogPreview.classList.add("btn-default");
+  btnLogPreview.value = "Preview";
+
+  btnLogPreview.onclick = function () {
+    setMidpointFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pItensidade);
+  inputsContainer.appendChild(inputIntensidade);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnLogPreview);
+
+  inputsContainer.appendChild(center);
+}

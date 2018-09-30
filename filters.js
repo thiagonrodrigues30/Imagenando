@@ -472,3 +472,268 @@ function applyMedianMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodS
   } 
   return imgMatrix;
 }
+
+function applyGeometricMeanMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodSize) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var prodR = 1;
+      var prodG = 1;
+      var prodB = 1;
+
+      // Percorre a matriz de convoluacao
+      for(var linhaConv = 0; linhaConv < neighborhoodSize; linhaConv++)
+      {
+        for(var colunaConv = 0; colunaConv < neighborhoodSize; colunaConv++)
+        {
+          var borderDist = (neighborhoodSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaConv;
+          var colunaIndex = coluna - borderDist + colunaConv;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            prodR *= currentPixel.r;
+            prodG *= currentPixel.g;
+            prodB *= currentPixel.b;
+          }
+        }
+      }
+
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = Math.pow(prodR, 1/(neighborhoodSize*neighborhoodSize));
+      currentPixel.g = Math.pow(prodG, 1/(neighborhoodSize*neighborhoodSize));
+      currentPixel.b = Math.pow(prodB, 1/(neighborhoodSize*neighborhoodSize));
+    }
+  } 
+  return imgMatrix;
+}
+
+function applyHarmonicMeanMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodSize) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var somR = 1;
+      var somG = 1;
+      var somB = 1;
+
+      // Percorre a matriz de convoluacao
+      for(var linhaConv = 0; linhaConv < neighborhoodSize; linhaConv++)
+      {
+        for(var colunaConv = 0; colunaConv < neighborhoodSize; colunaConv++)
+        {
+          var borderDist = (neighborhoodSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaConv;
+          var colunaIndex = coluna - borderDist + colunaConv;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            somR += 1/currentPixel.r;
+            somG += 1/currentPixel.g;
+            somB += 1/currentPixel.b;
+          }
+        }
+      }
+
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = (neighborhoodSize*neighborhoodSize)/somR;
+      currentPixel.g = (neighborhoodSize*neighborhoodSize)/somG;
+      currentPixel.b = (neighborhoodSize*neighborhoodSize)/somB;
+    }
+  } 
+  return imgMatrix;
+}
+
+function applyCounterHarmonicMeanMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodSize, pot) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var nR = 0;
+      var nG = 0;
+      var nB = 0;
+
+      var dR = 0;
+      var dG = 0;
+      var dB = 0;
+
+      // Percorre a matriz de convoluacao
+      for(var linhaConv = 0; linhaConv < neighborhoodSize; linhaConv++)
+      {
+        for(var colunaConv = 0; colunaConv < neighborhoodSize; colunaConv++)
+        {
+          var borderDist = (neighborhoodSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaConv;
+          var colunaIndex = coluna - borderDist + colunaConv;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            nR += Math.pow(currentPixel.r, pot + 1);
+            nG += Math.pow(currentPixel.g, pot + 1);
+            nB += Math.pow(currentPixel.b, pot + 1);
+
+            dR += Math.pow(currentPixel.r, pot);
+            dG += Math.pow(currentPixel.g, pot);
+            dB += Math.pow(currentPixel.b, pot);
+          }
+        }
+      }
+      
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = nR/dR;
+      currentPixel.g = nG/dG;
+      currentPixel.b = nB/dB;
+    }
+  } 
+  return imgMatrix;
+}
+
+function applyMaximumMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodSize) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var elementsR = [];
+      var elementsG = [];
+      var elementsB = [];
+
+      // Percorre a matriz de convoluacao
+      for(var linhaConv = 0; linhaConv < neighborhoodSize; linhaConv++)
+      {
+        for(var colunaConv = 0; colunaConv < neighborhoodSize; colunaConv++)
+        {
+          var borderDist = (neighborhoodSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaConv;
+          var colunaIndex = coluna - borderDist + colunaConv;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            elementsR.push(currentPixel.r);
+            elementsG.push(currentPixel.g);
+            elementsB.push(currentPixel.b);
+          }
+        }
+      }
+
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = Math.max.apply(null, elementsR);
+      currentPixel.g = Math.max.apply(null, elementsG);
+      currentPixel.b = Math.max.apply(null, elementsB);
+    }
+  } 
+  return imgMatrix;
+}
+
+function applyMinimumMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodSize) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var elementsR = [];
+      var elementsG = [];
+      var elementsB = [];
+
+      // Percorre a matriz de convoluacao
+      for(var linhaConv = 0; linhaConv < neighborhoodSize; linhaConv++)
+      {
+        for(var colunaConv = 0; colunaConv < neighborhoodSize; colunaConv++)
+        {
+          var borderDist = (neighborhoodSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaConv;
+          var colunaIndex = coluna - borderDist + colunaConv;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            elementsR.push(currentPixel.r);
+            elementsG.push(currentPixel.g);
+            elementsB.push(currentPixel.b);
+          }
+        }
+      }
+
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = Math.min.apply(null, elementsR);
+      currentPixel.g = Math.min.apply(null, elementsG);
+      currentPixel.b = Math.min.apply(null, elementsB);
+    }
+  } 
+  return imgMatrix;
+}
+
+function applyMidpointMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoodSize) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var elementsR = [];
+      var elementsG = [];
+      var elementsB = [];
+
+      // Percorre a matriz de convoluacao
+      for(var linhaConv = 0; linhaConv < neighborhoodSize; linhaConv++)
+      {
+        for(var colunaConv = 0; colunaConv < neighborhoodSize; colunaConv++)
+        {
+          var borderDist = (neighborhoodSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaConv;
+          var colunaIndex = coluna - borderDist + colunaConv;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            elementsR.push(currentPixel.r);
+            elementsG.push(currentPixel.g);
+            elementsB.push(currentPixel.b);
+          }
+        }
+      }
+
+      // Ordena os elementos
+      elementsR.sort(function(a, b){return a-b});
+      elementsG.sort(function(a, b){return a-b});
+      elementsB.sort(function(a, b){return a-b});
+
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = (elementsR[0] + elementsR[elementsR.length-1])/2;
+      currentPixel.g = (elementsG[0] + elementsG[elementsG.length-1])/2;
+      currentPixel.b = (elementsB[0] + elementsB[elementsB.length-1])/2;
+    }
+  } 
+  return imgMatrix;
+}
