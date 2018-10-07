@@ -153,6 +153,63 @@
           <div id="inputs-container">
 
           </div>
+
+          <br>
+          <div id="color-container">
+            <center>
+              <h5><strong>Cores</strong></h5>
+            </center>
+
+            <!-- Sliders do RGB -->
+            <center>
+              <p class="color-title">RGB</p>
+            </center>
+  
+            <p class="params-text" id="color-r">Red: 0</p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="slider-r" oninput="colorComponent('RGB')" ><br>
+
+            <p class="params-text" id="color-g">Green: 0</p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="slider-g" oninput="colorComponent('RGB')" ><br>
+
+            <p class="params-text" id="color-b">Blue: 0</p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="slider-b" oninput="colorComponent('RGB')" ><br><br>
+
+
+            <!-- Sliders do CMY -->
+            <center>
+              <p class="color-title">CMY</p>
+            </center>
+  
+            <p class="params-text" id="color-c">Cyan: 0</p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="slider-c" oninput="colorComponent('CMY')" ><br>
+
+            <p class="params-text" id="color-m">Magenta: 0</p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="slider-m" oninput="colorComponent('CMY')" ><br>
+
+            <p class="params-text" id="color-y">Yellow: 0</p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="slider-y" oninput="colorComponent('CMY')" ><br><br>
+
+
+            <!-- Sliders do HSI -->
+            <center>
+              <p class="color-title">HSI</p>
+            </center>
+  
+            <p class="params-text" id="color-h">Hue: 0°</p>
+            <input type="range" min="0" max="360" value="0" class="slider" id="slider-h" oninput="colorComponent('HSI')" ><br>
+
+            <p class="params-text" id="color-s">Saturation: 0</p>
+            <input type="range" min="0" max="100" value="0" class="slider" id="slider-s" oninput="colorComponent('HSI')" ><br>
+
+            <p class="params-text" id="color-i">Intensity: 0</p>
+            <input type="range" min="0" max="255" value="0" class="slider" id="slider-i" oninput="colorComponent('HSI')" ><br><br>
+
+            <center>
+              <div id="show-color">
+              </div>
+            </center>
+
+          </div><br><br>
   
         </div>
 
@@ -163,6 +220,7 @@
     <script src="classes.js"></script>
     <script src="filters.js"></script>
     <script src="inputs.js"></script>
+    <script src="colorComponents.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
