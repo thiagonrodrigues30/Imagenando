@@ -32,129 +32,150 @@
 
           <img id="myImage" crossOrigin="Anonymous" alt="ponte" src="">
 
+          <!-- Div que mostra a cor da conversao de cores -->
+          <div id="color-show-container">
+            <div id="show-color">
+            </div>
+          </div>
+
         </div>
 
         <!-- Container dos filtros e suas opçoes -->
         <div id="options-container" class="col-md-3"><br>
           
           <label for='imgFile' id="input-file-label" style="display: inline-block;">Escolher arquivo</label>
-          <input type="button" value="Resetar Imagem" onclick="reset()" style="display: inline-block; position: absolute; right: 15px;"/><br><br>
-          <input type="file" id="imgFile" style="display: none;" onchange="loadImage(this)" /></br>
+          <input type="button" value="Resetar Imagem" onclick="reset()" style="display: inline-block; position: absolute; right: 15px;"/><br>
+          <input type="file" id="imgFile" style="display: none;" onchange="loadImage(this)" />
           
-
-          <center>  
-
-            <div style="width: 256px;">
-              <h5>
-                <strong>Histograma</strong>
-                <select id="histograma-op" onchange="setHistogram()" style="margin-left: 30px;">
-                  <option value="all">Tudo</option>
-                  <option value="red">Vermelho</option>
-                  <option value="green">Verde</option>
-                  <option value="blue">Azul</option>
+          <!-- Select de Funcionalidade -->
+          <div id="div-funcao">
+            <center>
+            <h5>
+                <strong>Função</strong>
+                <select id="funcao-op" onchange="setFuncao()">
+                  <option value="filtros">Filtros</option>
+                  <option value="cores">Cores</option>
                 </select>
               </h5>
+              </center>
+          </div><br>
+
+          <div id="filtros-container">
+            <center>  
+
+              <div style="width: 256px;">
+                <h5>
+                  <strong>Histograma</strong>
+                  <select id="histograma-op" onchange="setHistogram()" style="margin-left: 30px;">
+                    <option value="all">Tudo</option>
+                    <option value="red">Vermelho</option>
+                    <option value="green">Verde</option>
+                    <option value="blue">Azul</option>
+                  </select>
+                </h5>
+              </div>
+
+              <canvas id="histograma"></canvas>
+
+            </center>
+
+            <center>
+              <h5><strong>Filtros</strong></h5>
+            </center>
+            <div class="list-group" style="max-height: 124px; overflow: hidden; overflow-y: scroll;">
+              <a href="#" class="list-group-item" id="negative-item" onclick="setNegativeFilter()">
+                Negativo 
+                <span class="params-icon" id="negative-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="log-item" onclick="configLogInputs()">
+                Logarítmico
+                <span class="params-icon" id="log-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="power-item" onclick="configPowerInputs()">
+                Potência
+                 <span class="params-icon" id="power-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="threshold-item" onclick="configThresholdInputs()">
+                Limiar
+                 <span class="params-icon" id="threshold-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="bit-plane-item" onclick="configBitPlaneInputs()">
+                Plano de Bits
+                 <span class="params-icon" id="bit-plane-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="linear-parts-item" onclick="configLinearByPartsInputs()">
+                Linear Por Partes
+                 <span class="params-icon" id="linear-parts-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="hist-equalization-item" onclick="setHistogramEqualization()">
+                Equalizar Histograma
+                 <span class="params-icon" id="hist-equalization-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="convolution-item" onclick="configConvolutionMatrixInputs(setConvolutionFilter, 'convolution-icon')">
+                Convolução
+                 <span class="params-icon" id="convolution-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="average-item" onclick="configConvolutionMatrixInputs(setAverageFilter, 'average-icon')">
+                Média
+                 <span class="params-icon" id="average-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="weighted-average-item" onclick="configConvolutionMatrixInputs(setWeightedAverageFilter, 'weighted-average-icon')">
+                Média Ponderada
+                 <span class="params-icon" id="weighted-average-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="median-item" onclick="configMedianMatrixInputs()">
+                Mediana
+                 <span class="params-icon" id="median-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="laplacian-item" onclick="setLaplacianFilter()">
+                Laplaciano
+                 <span class="params-icon" id="laplacian-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="sobel-item" onclick="setSobelFilter()">
+                Sobel
+                 <span class="params-icon" id="sobel-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="high-boost-item" onclick="setHighBoostFilter()">
+                Nitidez High-Boost
+                 <span class="params-icon" id="high-boost-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="geometric-mean-item" onclick="configGeometricMeanInputs()">
+                Média Geométrica
+                 <span class="params-icon" id="geometric-mean-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="harmonic-mean-item" onclick="configHarmonicMeanInputs()">
+                Média Harmônica
+                 <span class="params-icon" id="harmonic-mean-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="counter-harmonic-mean-item" onclick="configCounterHarmonicMeanInputs()">
+                Média Contra-harmônica
+                 <span class="params-icon" id="counter-harmonic-mean-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="maximum-item" onclick="configMaximumInputs()">
+                Máximo
+                 <span class="params-icon" id="maximum-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="minimum-item" onclick="configMinimumInputs()">
+                Mínimo
+                 <span class="params-icon" id="minimum-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="midpoint-item" onclick="configMidpointInputs()">
+                Ponto Médio
+                 <span class="params-icon" id="midpoint-icon"></span>
+              </a>
             </div>
 
-            <canvas id="histograma"></canvas>
+            <center>
+              <h5><strong>Parâmetros</strong></h5>
+            </center>
+            
+            <div id="inputs-container">
 
-          </center>
+            </div>
 
-          <center>
-            <h5><strong>Filtros</strong></h5>
-          </center>
-          <div class="list-group" style="max-height: 124px; overflow: hidden; overflow-y: scroll;">
-            <a href="#" class="list-group-item" id="negative-item" onclick="setNegativeFilter()">
-              Negativo 
-              <span class="params-icon" id="negative-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="log-item" onclick="configLogInputs()">
-              Logarítmico
-              <span class="params-icon" id="log-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="power-item" onclick="configPowerInputs()">
-              Potência
-               <span class="params-icon" id="power-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="threshold-item" onclick="configThresholdInputs()">
-              Limiar
-               <span class="params-icon" id="threshold-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="bit-plane-item" onclick="configBitPlaneInputs()">
-              Plano de Bits
-               <span class="params-icon" id="bit-plane-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="linear-parts-item" onclick="configLinearByPartsInputs()">
-              Linear Por Partes
-               <span class="params-icon" id="linear-parts-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="hist-equalization-item" onclick="setHistogramEqualization()">
-              Equalizar Histograma
-               <span class="params-icon" id="hist-equalization-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="convolution-item" onclick="configConvolutionMatrixInputs(setConvolutionFilter, 'convolution-icon')">
-              Convolução
-               <span class="params-icon" id="convolution-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="average-item" onclick="configConvolutionMatrixInputs(setAverageFilter, 'average-icon')">
-              Média
-               <span class="params-icon" id="average-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="weighted-average-item" onclick="configConvolutionMatrixInputs(setWeightedAverageFilter, 'weighted-average-icon')">
-              Média Ponderada
-               <span class="params-icon" id="weighted-average-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="median-item" onclick="configMedianMatrixInputs()">
-              Mediana
-               <span class="params-icon" id="median-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="laplacian-item" onclick="setLaplacianFilter()">
-              Laplaciano
-               <span class="params-icon" id="laplacian-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="sobel-item" onclick="setSobelFilter()">
-              Sobel
-               <span class="params-icon" id="sobel-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="high-boost-item" onclick="setHighBoostFilter()">
-              Nitidez High-Boost
-               <span class="params-icon" id="high-boost-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="geometric-mean-item" onclick="configGeometricMeanInputs()">
-              Média Geométrica
-               <span class="params-icon" id="geometric-mean-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="harmonic-mean-item" onclick="configHarmonicMeanInputs()">
-              Média Harmônica
-               <span class="params-icon" id="harmonic-mean-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="counter-harmonic-mean-item" onclick="configCounterHarmonicMeanInputs()">
-              Média Contra-harmônica
-               <span class="params-icon" id="counter-harmonic-mean-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="maximum-item" onclick="configMaximumInputs()">
-              Máximo
-               <span class="params-icon" id="maximum-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="minimum-item" onclick="configMinimumInputs()">
-              Mínimo
-               <span class="params-icon" id="minimum-icon"></span>
-            </a>
-            <a href="#" class="list-group-item" id="midpoint-item" onclick="configMidpointInputs()">
-              Ponto Médio
-               <span class="params-icon" id="midpoint-icon"></span>
-            </a>
           </div>
 
-          <center>
-            <h5><strong>Parâmetros</strong></h5>
-          </center>
           
-          <div id="inputs-container">
-
-          </div>
-
-          <br>
           <div id="color-container">
             <center>
               <h5><strong>Cores</strong></h5>
@@ -203,11 +224,6 @@
 
             <p class="params-text" id="color-i">Intensity: 0</p>
             <input type="range" min="0" max="255" value="0" class="slider" id="slider-i" oninput="colorComponent('HSI')" ><br><br>
-
-            <center>
-              <div id="show-color">
-              </div>
-            </center>
 
           </div><br><br>
   

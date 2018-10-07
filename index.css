@@ -149,6 +149,7 @@ body {
 
 #color-container {
 	width: 100%;
+	display: none;
 }
 
 .color-title {
@@ -156,7 +157,30 @@ body {
 }
 
 #show-color {
-	width: 100px;
-	height: 100px;
+	width: 130px;
+	height: 130px;
 	border: 1px black solid;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+#div-funcao {
+	width: 100%;
+}
+
+#funcao-op {
+	margin-left: 30px; 
+	width: 150px;
+}
+
+#color-show-container{
+	width: 150px;
+	height: 150px;
+	position: absolute;
+
+	right: 0;
+	top: 80px;
+
+	background-color: #707070;
+	display: none;
 }

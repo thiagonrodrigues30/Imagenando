@@ -836,3 +836,21 @@ function setMidpointFilter(){
   ctx.putImageData(newImgData, 0, 0);
   setHistogram();
 }
+
+function setFuncao() {
+  var op = document.getElementById("funcao-op").value;
+
+  if(op == "filtros")
+  {
+    document.getElementById("filtros-container").style.display = "block";
+    document.getElementById("color-container").style.display = "none";
+    document.getElementById("color-show-container").style.display = "none";
+  }
+  else if(op == "cores")
+  {
+    document.getElementById("color-container").style.display = "block";
+    document.getElementById("color-show-container").style.display = "block";
+    document.getElementById("filtros-container").style.display = "none";
+
+  }
+}
