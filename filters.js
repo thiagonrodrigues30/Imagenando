@@ -1,3 +1,31 @@
+//Aplica o brilho na matriz recebida
+function applyBrightnessFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, brightness){
+
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = imgMatrix[linha][coluna];
+
+      // Converte rgb para hsv
+      var hsv = convertRGBtoHSV(currentPixel.r, currentPixel.g, currentPixel.b);
+
+      // Converte hsv para rgb modificando `v`
+      var rgb = convertHSVtoRGB(hsv.h, hsv.s, brightness);
+
+      currentPixel.r = rgb.r;
+      currentPixel.g = rgb.g;
+      currentPixel.b = rgb.b;
+      currentPixel.a = 255;
+    }
+  }
+
+  return imgMatrix;
+}
+
 //Aplica o filtro de negativo a matriz recebida
 function applyNegativeFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight){
 
@@ -132,6 +160,40 @@ function transformPixelByBit(pixel, bit) {
   }
   var decimal = parseInt(arrayBits.join(''), 2);
   return decimal;
+}
+
+//Aplica o filtro de sépia a matriz recebida
+function applySepiaFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight){
+
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+  //console.log(imgMatrix);
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = Math.trunc(0.393 * currentPixel.r + 0.769 * currentPixel.g + 0.189 * currentPixel.b);
+      currentPixel.g = Math.trunc(0.349 * currentPixel.r + 0.686 * currentPixel.g + 0.168 * currentPixel.b);
+      currentPixel.b = Math.trunc(0.272 * currentPixel.r + 0.534 * currentPixel.g + 0.131 * currentPixel.b);
+      currentPixel.a = 255;
+      
+      if(currentPixel.r > 255) {
+        currentPixel.r = 255;
+      }
+
+      if(currentPixel.g > 255) {
+        currentPixel.g = 255;
+      }
+
+      if(currentPixel.b > 255) {
+        currentPixel.b = 255;
+      }
+    }
+  }
+
+  return imgMatrix;
 }
 
 function applyLinearByPartsMatrix(imgMatrixOriginal, imgWidth, imgHeight, Xo, Yo, X, Y) {

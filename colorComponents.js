@@ -307,3 +307,89 @@ function convertHSItoCMY(h, s, i) {
   document.getElementById("color-y").textContent = "Yellow: " + y;
 
 }
+
+function convertRGBtoHSV(r, g, b) {
+  var min = Math.min(r, g, b);
+  var max = Math.max(r, g, b);
+  var delta = max - min;
+  var h, s, v = max;
+
+  v = Math.floor(max / 255 * 100);
+    
+  if (max == 0) {
+    return { h: 0, s: 0, v: 0 };
+  }
+
+  s = Math.floor(delta / max * 100);
+    
+  var deltadiv; 
+  if(delta == 0) {
+    deltadiv = 1;
+  } else {
+    deltadiv = delta;
+  }
+    
+  if(r == max) {
+    h = (g - b) / deltadiv;
+  } else if(g == max) {
+    h = 2 + (b - r) / deltadiv;
+  } else {
+    h = 4 + (r - g) / deltadiv;
+  }
+    
+  h = Math.floor(h * 60);
+  if(h < 0) {
+    h += 360;
+  }
+    
+  return { h: h, s: s, v: v }
+}
+
+function convertHSVtoRGB(h, s, v) {
+  h = h / 360;
+  s = s / 100;
+  v = v / 100;
+
+  if (s == 0) {
+    var val = Math.round(v * 255);
+    return { r: val, g: val, b: val };
+  }
+
+  hPos = h * 6;
+  hPosBase = Math.floor(hPos);
+  base1 = v * (1 - s);
+  base2 = v * (1 - s * (hPos - hPosBase));
+  base3 = v * (1 - s * (1 - (hPos - hPosBase)));
+    
+  if (hPosBase == 0) {
+    r = v; 
+    g = base3; 
+    b = base1;
+  } else if (hPosBase == 1) {
+    r = base2; 
+    g = v; 
+    b = base1;
+  } else if (hPosBase == 2) {
+    r = base1; 
+    g = v; 
+    b = base3;
+  } else if (hPosBase == 3) {
+    r = base1; 
+    g = base2; 
+    b = v;
+  } else if (hPosBase == 4) {
+    r = base3; 
+    g = base1; 
+    b = v;
+  } else {
+    r = v; 
+    g = base1; 
+    b = base2;
+  }
+
+  r = Math.round(r * 255);
+  g = Math.round(g * 255);
+  b = Math.round(b * 255);
+  
+  return { r: r, g: g, b: b };
+}

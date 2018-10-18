@@ -83,6 +83,10 @@
               <h5><strong>Filtros</strong></h5>
             </center>
             <div class="list-group" style="max-height: 124px; overflow: hidden; overflow-y: scroll;">
+              <a href="#" class="list-group-item" id="brightness-item" onclick="configBrightnessInputs()">
+                Brilho 
+                <span class="params-icon" id="brightness-icon"></span>
+              </a>
               <a href="#" class="list-group-item" id="negative-item" onclick="setNegativeFilter()">
                 Negativo 
                 <span class="params-icon" id="negative-icon"></span>
@@ -102,6 +106,10 @@
               <a href="#" class="list-group-item" id="bit-plane-item" onclick="configBitPlaneInputs()">
                 Plano de Bits
                  <span class="params-icon" id="bit-plane-icon"></span>
+              </a>
+              <a href="#" class="list-group-item" id="sepia-item" onclick="setSepiaFilter()">
+                Sépia
+                 <span class="params-icon" id="sepia-icon"></span>
               </a>
               <a href="#" class="list-group-item" id="linear-parts-item" onclick="configLinearByPartsInputs()">
                 Linear Por Partes

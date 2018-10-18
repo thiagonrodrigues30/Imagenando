@@ -131,6 +131,23 @@ function reset() {
   setFilterButtonBackground(-1);
 }
 
+function setBrightnessFilter(){
+
+  // Tira o background dos filtros anteriores e aplica no atual
+  setFilterButtonBackground("brightness-item");
+
+  // Pega o valor dos inputs
+  var intensidadeBrightness = document.getElementById("intensidade-brightness").value;
+
+  var newMatrix = applyBrightnessFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, intensidadeBrightness);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
 function setNegativeFilter(){
 
   // Limpa o container de parametros e tira os icones de parametros
@@ -212,6 +229,24 @@ function setBitPlaneFilter() {
   var bitPlane = document.getElementById("bit-plane-input").value;
 
   var newMatrix = applyBitPlaneMatrix(imgMatrixOriginal, imgWidth, imgHeight, bitPlane);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function setSepiaFilter(){
+
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("sepia-item");
+  
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applySepiaFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
