@@ -30,7 +30,11 @@
             <canvas id="myCanvas" width="150" height="200"></canvas>
           </center>
 
+          <canvas id="secondaryCanvas" width="150" height="200"></canvas>
+
           <img id="myImage" crossOrigin="Anonymous" alt="ponte" src="">
+
+          <img id="secondaryImage" crossOrigin="Anonymous" alt="" src="">
 
           <!-- Div que mostra a cor da conversao de cores -->
           <div id="color-show-container">
@@ -41,11 +45,7 @@
         </div>
 
         <!-- Container dos filtros e suas opçoes -->
-        <div id="options-container" class="col-md-3"><br>
-          
-          <label for='imgFile' id="input-file-label" style="display: inline-block;">Escolher arquivo</label>
-          <input type="button" value="Resetar Imagem" onclick="reset()" style="display: inline-block; position: absolute; right: 15px;"/><br>
-          <input type="file" id="imgFile" style="display: none;" onchange="loadImage(this)" />
+        <div id="options-container" class="col-md-3">
           
           <!-- Select de Funcionalidade -->
           <div id="div-funcao">
@@ -55,12 +55,18 @@
                 <select id="funcao-op" onchange="setFuncao()">
                   <option value="filtros">Filtros</option>
                   <option value="cores">Cores</option>
+                  <option value="img-sub">Subtração de Imagens</option>
                 </select>
               </h5>
               </center>
           </div><br>
 
           <div id="filtros-container">
+
+            <label for='imgFile' id="input-file-label" style="display: inline-block;">Escolher arquivo</label>
+            <input type="button" value="Resetar Imagem" onclick="reset()" style="display: inline-block; position: absolute; right: 15px;"/><br>
+            <input type="file" id="imgFile" style="display: none;" onchange="loadImage(this)" /><br>
+
             <center>  
 
               <div style="width: 256px;">
@@ -233,6 +239,29 @@
             <p class="params-text" id="color-i">Intensity: 0</p>
             <input type="range" min="0" max="255" value="0" class="slider" id="slider-i" oninput="colorComponent('HSI')" ><br><br>
 
+          </div>
+
+          <div id="image-subtraction-container">
+            <center>
+              <h5><strong>Subtração de Imagens</strong></h5>
+            </center><br>
+
+            <!--label for='imgFile' id="input-file-label" style="display: inline-block;">Escolher arquivo</label>
+            <input type="button" value="Resetar Imagem" onclick="reset()" style="display: inline-block; position: absolute; right: 15px;"/><br>
+            <input type="file" id="imgFile" style="display: none;" onchange="loadImage(this)" /><br-->
+
+            <label for='img-sub-1-file'>Arquivo Principal</label>
+            <input type="file" id="img-sub-1-file" onchange="loadImage(this)">
+            <br><br>
+
+            <label for='img-sub-2-file'>Arquivo para Subtração</label>
+            <input type="file" id="img-sub-2-file" onchange="loadSubImage(this)">
+
+            <br><br>
+            <center>
+              <input type="button" class="btn btn-default" value="Aplicar" onclick="setImageSubtraction()" >
+            </center>
+
           </div><br><br>
   
         </div>
@@ -245,6 +274,7 @@
     <script src="filters.js"></script>
     <script src="inputs.js"></script>
     <script src="colorComponents.js"></script>
+    <script src="imageSubtraction.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

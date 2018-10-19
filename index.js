@@ -1,6 +1,12 @@
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
+var c2 = document.getElementById("secondaryCanvas");
+var ctx2 = c2.getContext("2d");
+
+// Sempre depois de aplicar uma função usando o canvas e a imagem secundaria é preciso resetar os dois
+// para poder usar em outras funcoes sem perigo de dar conflito
+
 var imgWidth;
 var imgHeight;
 
@@ -880,12 +886,21 @@ function setFuncao() {
     document.getElementById("filtros-container").style.display = "block";
     document.getElementById("color-container").style.display = "none";
     document.getElementById("color-show-container").style.display = "none";
+    document.getElementById("image-subtraction-container").style.display = "none";
   }
   else if(op == "cores")
   {
     document.getElementById("color-container").style.display = "block";
     document.getElementById("color-show-container").style.display = "block";
     document.getElementById("filtros-container").style.display = "none";
+    document.getElementById("image-subtraction-container").style.display = "none";
 
+  }
+  else if(op == "img-sub")
+  {
+    document.getElementById("image-subtraction-container").style.display = "block";
+    document.getElementById("color-container").style.display = "none";
+    document.getElementById("color-show-container").style.display = "none";
+    document.getElementById("filtros-container").style.display = "none";
   }
 }

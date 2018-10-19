@@ -1,0 +1,5 @@
+modularizar a geração da matriz da convolução em javascript
+
+criar mecanismo de segurança na subtração de imagem pra bloquear os inputs e desbloquear a medida que as imagens forem selecionadas
+
+adicionar botão de resetar imagem na parte de subtração de imagens
