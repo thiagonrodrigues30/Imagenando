@@ -320,7 +320,7 @@ function convertRGBtoHSV(r, g, b) {
     return { h: 0, s: 0, v: 0 };
   }
 
-  s = Math.floor(delta / max * 100);
+  s = Math.floor(delta / max);
     
   var deltadiv; 
   if(delta == 0) {

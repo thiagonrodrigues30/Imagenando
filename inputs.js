@@ -1,6 +1,6 @@
 function configBrightnessInputs() {
   // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
-  setParamsIcon("log-icon");
+  setParamsIcon("brightness-icon");
   
   var inputsContainer = document.getElementById("inputs-container");
 
