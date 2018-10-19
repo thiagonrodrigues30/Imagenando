@@ -137,15 +137,12 @@ function reset() {
   setFilterButtonBackground(-1);
 }
 
-function setBrightnessFilter(){
+function setBrightnessFilter(intensidadeBrightness){
 
   // Tira o background dos filtros anteriores e aplica no atual
   setFilterButtonBackground("brightness-item");
 
-  // Pega o valor dos inputs
-  var intensidadeBrightness = document.getElementById("intensidade-brightness").value;
-
-  var newMatrix = applyBrightnessFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, intensidadeBrightness);
+  var newMatrix = applyBrightnessFilterMatrix(currentMatrix, imgWidth, imgHeight, intensidadeBrightness);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);

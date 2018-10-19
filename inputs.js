@@ -4,48 +4,32 @@ function configBrightnessInputs() {
   
   var inputsContainer = document.getElementById("inputs-container");
 
-  // Cria o elemento p de label do input intensidade
-  var pItensidade = document.createElement("p");
-  pItensidade.classList.add("params-text");
-  pItensidade.id = "intensidade-text-brightness";
-  pItensidade.textContent = "Brilho: 0";
+  var btnIncreaseBrightness = document.createElement("input");
+  btnIncreaseBrightness.type = "button";
+  btnIncreaseBrightness.classList.add("btn")
+  btnIncreaseBrightness.classList.add("btn-default");
+  btnIncreaseBrightness.value = "Aumentar >>";
 
-  // Cria o range para input da intensidade
-  var inputIntensidade = document.createElement("input");
-  inputIntensidade.type = "range";
-  inputIntensidade.classList.add("slider");
-  inputIntensidade.min = "0";
-  inputIntensidade.max = "100";
-  inputIntensidade.value = "0";
-  inputIntensidade.id = "intensidade-brightness";
-
-  inputIntensidade.oninput = function() {
-    pItensidade.textContent = "Brilho: " + this.value;
+  btnIncreaseBrightness.onclick = function () {
+    setBrightnessFilter("+");
   }
 
-  // Cria o botão que ativa o preview do filtro
-  var btnLogPreview = document.createElement("input");
-  btnLogPreview.type = "button";
-  btnLogPreview.classList.add("btn")
-  btnLogPreview.classList.add("btn-default");
-  btnLogPreview.value = "Preview";
+  inputsContainer.appendChild(btnIncreaseBrightness);
 
-  btnLogPreview.onclick = function () {
-    setBrightnessFilter();
-  }
-
-
-  // Insere os elementos criados no container dos inputs
-  inputsContainer.appendChild(pItensidade);
-  inputsContainer.appendChild(inputIntensidade);
   inputsContainer.appendChild(document.createElement("br"));
   inputsContainer.appendChild(document.createElement("br"));
 
-  var center = document.createElement("center");
-  center.appendChild(btnLogPreview);
+  var btnReduceBrightness = document.createElement("input");
+  btnReduceBrightness.type = "button";
+  btnReduceBrightness.classList.add("btn")
+  btnReduceBrightness.classList.add("btn-default");
+  btnReduceBrightness.value = "Reduzir <<";
 
-  inputsContainer.appendChild(center);
-  
+  btnReduceBrightness.onclick = function () {
+    setBrightnessFilter("-");
+  }
+
+  inputsContainer.appendChild(btnReduceBrightness);
 }
 
 function configLogInputs() {

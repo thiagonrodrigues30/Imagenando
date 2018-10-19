@@ -10,16 +10,17 @@ function applyBrightnessFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, bri
     {
       var currentPixel = imgMatrix[linha][coluna];
 
-      // Converte rgb para hsv
-      var hsv = convertRGBtoHSV(currentPixel.r, currentPixel.g, currentPixel.b);
-
-      // Converte hsv para rgb modificando `v`
-      var rgb = convertHSVtoRGB(hsv.h, hsv.s, brightness);
-
-      currentPixel.r = rgb.r;
-      currentPixel.g = rgb.g;
-      currentPixel.b = rgb.b;
-      currentPixel.a = 255;
+      if(brightness == "+") {
+        currentPixel.r = currentPixel.r + 30;
+        currentPixel.g = currentPixel.g + 30;
+        currentPixel.b = currentPixel.b + 30;
+        currentPixel.a = 255;
+      } else {
+        currentPixel.r = currentPixel.r - 30;
+        currentPixel.g = currentPixel.g - 30;
+        currentPixel.b = currentPixel.b - 30;
+        currentPixel.a = 255; 
+      }
     }
   }
 
@@ -174,9 +175,9 @@ function applySepiaFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight){
     for(var coluna = 0; coluna < imgWidth; coluna++)
     {
       var currentPixel = imgMatrix[linha][coluna];
-      currentPixel.r = Math.trunc(0.393 * currentPixel.r + 0.769 * currentPixel.g + 0.189 * currentPixel.b);
-      currentPixel.g = Math.trunc(0.349 * currentPixel.r + 0.686 * currentPixel.g + 0.168 * currentPixel.b);
-      currentPixel.b = Math.trunc(0.272 * currentPixel.r + 0.534 * currentPixel.g + 0.131 * currentPixel.b);
+      currentPixel.r = Math.round(0.393 * currentPixel.r + 0.769 * currentPixel.g + 0.189 * currentPixel.b);
+      currentPixel.g = Math.round(0.349 * currentPixel.r + 0.686 * currentPixel.g + 0.168 * currentPixel.b);
+      currentPixel.b = Math.round(0.272 * currentPixel.r + 0.534 * currentPixel.g + 0.131 * currentPixel.b);
       currentPixel.a = 255;
       
       if(currentPixel.r > 255) {
