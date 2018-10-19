@@ -175,21 +175,27 @@ function applySepiaFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight){
     for(var coluna = 0; coluna < imgWidth; coluna++)
     {
       var currentPixel = imgMatrix[linha][coluna];
-      currentPixel.r = Math.round(0.393 * currentPixel.r + 0.769 * currentPixel.g + 0.189 * currentPixel.b);
-      currentPixel.g = Math.round(0.349 * currentPixel.r + 0.686 * currentPixel.g + 0.168 * currentPixel.b);
-      currentPixel.b = Math.round(0.272 * currentPixel.r + 0.534 * currentPixel.g + 0.131 * currentPixel.b);
+      var r = Math.trunc(0.393 * currentPixel.r + 0.769 * currentPixel.g + 0.189 * currentPixel.b);
+      var g = Math.trunc(0.349 * currentPixel.r + 0.686 * currentPixel.g + 0.168 * currentPixel.b);
+      var b = Math.trunc(0.272 * currentPixel.r + 0.534 * currentPixel.g + 0.131 * currentPixel.b);
       currentPixel.a = 255;
       
-      if(currentPixel.r > 255) {
+      if(r > 255) {
         currentPixel.r = 255;
+      } else {
+        currentPixel.r = r;
       }
 
-      if(currentPixel.g > 255) {
+      if(g > 255) {
         currentPixel.g = 255;
+      } else {
+        currentPixel.g = g;
       }
 
-      if(currentPixel.b > 255) {
+      if(b > 255) {
         currentPixel.b = 255;
+      } else {
+        currentPixel.b = b;
       }
     }
   }
