@@ -1,6 +1,6 @@
-var subImageMatrix;
+var secImageMatrix;
 
-function loadSubImage(input) {
+function loadSecImage(input) {
 
 	var img = document.getElementById("secondaryImage");
 
@@ -12,14 +12,14 @@ function loadSubImage(input) {
     };
 
     reader.onloadend = function (e) {
-      loadCanvasImgSub(img);
+      loadCanvasSecImg(img);
     }
 
     reader.readAsDataURL(input.files[0]);
   }
 }
 
-function loadCanvasImgSub(img) {
+function loadCanvasSecImg(img) {
 	
   //setImageDimension(img);
   setSecondaryImageDimension(img);
@@ -80,6 +80,52 @@ function applyImageSubtractionMatrix(imgMatrixOriginal, subImageMatrix, imgWidth
       currentPixel.g = (currentPixel.g - currentPixelSecImg.g + 255) / 2;
       currentPixel.b = (currentPixel.b - currentPixelSecImg.b + 255) / 2;
      
+    }
+  }
+
+  return imgMatrix;
+}
+
+function setChromaKey() {
+  
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores
+  setFilterButtonBackground(-1);
+  
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyChromaKeyMatrix(currentMatrix, secImageMatrix, imgWidth, imgHeight);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function applyChromaKeyMatrix(currentMatrix, secImageMatrix, imgWidth, imgHeight) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+  //console.log(imgMatrix);
+
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var currentPixel = imgMatrix[linha][coluna];
+      var currentPixelSecImg = subImageMatrix[linha][coluna];
+      
+      // Converte para HSV
+      var currentHSV = convertRGBtoHSV2(currentPixel.r, currentPixel.g, currentPixel.b);
+
+      if(currentHSV.h >= 60 && currentHSV.h <= 130 && currentHSV.s >= 0.4 && currentHSV.v >= 0.3)
+      {
+        currentPixel.r = currentPixelSecImg.r;
+        currentPixel.g = currentPixelSecImg.g;
+        currentPixel.b = currentPixelSecImg.b;
+      }
+  
     }
   }
 

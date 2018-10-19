@@ -205,3 +205,8 @@ body {
 	width: 100%;
 	display: none;
 }
+
+#chroma-key-container {
+	width: 100%;
+	display: none;
+}

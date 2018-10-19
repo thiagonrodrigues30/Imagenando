@@ -393,3 +393,46 @@ function convertHSVtoRGB(h, s, v) {
   
   return { r: r, g: g, b: b };
 }
+
+function convertRGBtoHSV2(r, g, b) {
+  var R = r / 255;
+  var G = g / 255;
+  var B = b / 255;
+
+  var max = Math.max(R, G, B);
+  var min = Math.min(R, G, B);
+  var delta = max - min;
+
+  var h, s, v;
+
+  if (max == 0) {
+    return { h: 0, s: 0, v: 0 };
+  }
+
+  if(delta == 0)
+  {
+    h = 0;
+  }
+  else if(max == R && G >= B)
+  {
+    h = 60 * (G - B) / delta;
+  }
+  else if(max == R && G < B)
+  {
+    h = 60 * (G - B) / delta + 360;
+  }
+  else if(max == G)
+  {
+    h = 60 * (B - R) / delta + 120;
+  }
+  else if(max == B)
+  {
+    h = 60 * (R - G) / delta + 240;
+  }
+
+  s = delta / max;
+  v = max;
+
+  // Retorno h (0..360), s (0..1), v (0..1)
+  return { h: h, s: s, v: v }
+}

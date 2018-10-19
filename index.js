@@ -884,6 +884,7 @@ function setFuncao() {
     document.getElementById("color-container").style.display = "none";
     document.getElementById("color-show-container").style.display = "none";
     document.getElementById("image-subtraction-container").style.display = "none";
+    document.getElementById("chroma-key-container").style.display = "none";
   }
   else if(op == "cores")
   {
@@ -891,11 +892,20 @@ function setFuncao() {
     document.getElementById("color-show-container").style.display = "block";
     document.getElementById("filtros-container").style.display = "none";
     document.getElementById("image-subtraction-container").style.display = "none";
-
+    document.getElementById("chroma-key-container").style.display = "none";
   }
   else if(op == "img-sub")
   {
     document.getElementById("image-subtraction-container").style.display = "block";
+    document.getElementById("color-container").style.display = "none";
+    document.getElementById("color-show-container").style.display = "none";
+    document.getElementById("filtros-container").style.display = "none";
+    document.getElementById("chroma-key-container").style.display = "none";
+  }
+  else if(op == "chroma-key")
+  {
+    document.getElementById("chroma-key-container").style.display = "block";
+    document.getElementById("image-subtraction-container").style.display = "none";
     document.getElementById("color-container").style.display = "none";
     document.getElementById("color-show-container").style.display = "none";
     document.getElementById("filtros-container").style.display = "none";

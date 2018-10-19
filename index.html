@@ -56,6 +56,7 @@
                   <option value="filtros">Filtros</option>
                   <option value="cores">Cores</option>
                   <option value="img-sub">Subtração de Imagens</option>
+                  <option value="chroma-key">Chroma Key</option>
                 </select>
               </h5>
               </center>
@@ -250,19 +251,38 @@
             <input type="button" value="Resetar Imagem" onclick="reset()" style="display: inline-block; position: absolute; right: 15px;"/><br>
             <input type="file" id="imgFile" style="display: none;" onchange="loadImage(this)" /><br-->
 
-            <label for='img-sub-1-file'>Arquivo Principal</label>
+            <label for='img-sub-1-file'>Imagem Principal</label>
             <input type="file" id="img-sub-1-file" onchange="loadImage(this)">
             <br><br>
 
-            <label for='img-sub-2-file'>Arquivo para Subtração</label>
-            <input type="file" id="img-sub-2-file" onchange="loadSubImage(this)">
+            <label for='img-sub-2-file'>Imagem para Subtração</label>
+            <input type="file" id="img-sub-2-file" onchange="loadSecImage(this)">
 
             <br><br>
             <center>
               <input type="button" class="btn btn-default" value="Aplicar" onclick="setImageSubtraction()" >
             </center>
 
-          </div><br><br>
+          </div>
+
+          <div id="chroma-key-container">
+            <center>
+              <h5><strong>Chroma Key</strong></h5>
+            </center><br>
+
+            <label for='img-sub-1-file'>Imagem Principal</label>
+            <input type="file" id="chroma-key-1-file" onchange="loadImage(this)">
+            <br><br>
+
+            <label for='img-sub-2-file'>Imagem de Fundo</label>
+            <input type="file" id="chroma-key-2-file" onchange="loadSecImage(this)">
+
+            <br><br>
+            <center>
+              <input type="button" class="btn btn-default" value="Aplicar" onclick="setChromaKey()" >
+            </center>
+
+          </div>
   
         </div>
 
@@ -274,7 +294,7 @@
     <script src="filters.js"></script>
     <script src="inputs.js"></script>
     <script src="colorComponents.js"></script>
-    <script src="imageSubtraction.js"></script>
+    <script src="otherFunctions.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
