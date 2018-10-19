@@ -119,11 +119,26 @@ function applyChromaKeyMatrix(currentMatrix, secImageMatrix, imgWidth, imgHeight
       // Converte para HSV
       var currentHSV = convertRGBtoHSV2(currentPixel.r, currentPixel.g, currentPixel.b);
 
+      // Verifica se o pixel é da cor do chroma key
       if(currentHSV.h >= 60 && currentHSV.h <= 130 && currentHSV.s >= 0.4 && currentHSV.v >= 0.3)
       {
         currentPixel.r = currentPixelSecImg.r;
         currentPixel.g = currentPixelSecImg.g;
         currentPixel.b = currentPixelSecImg.b;
+      }
+      // Corrige algum reflexo verde que possa sobrar na imagem
+      else if (currentHSV.h >= 60 && currentHSV.h <= 130 && currentHSV.s >= 0.15 && currentHSV.v >= 0.15)
+      {
+        if((currentPixel.r * currentPixel.b) != 0 && (currentPixel.g * currentPixel.g) / (currentPixel.r * currentPixel.b) > 1.5)
+        {
+          currentPixel.r *= 1.4;
+          currentPixel.b *= 1.4;
+        } 
+        else
+        {
+          currentPixel.r *= 1.2;
+          currentPixel.b *= 1.2;
+        }
       }
   
     }
