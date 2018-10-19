@@ -9,21 +9,26 @@ function configBrightnessInputs() {
   btnIncreaseBrightness.classList.add("btn")
   btnIncreaseBrightness.classList.add("btn-default");
   btnIncreaseBrightness.value = "Aumentar >>";
+  btnIncreaseBrightness.style.float = "right";
+  btnIncreaseBrightness.style.width = "110px";
 
   btnIncreaseBrightness.onclick = function () {
     setBrightnessFilter("+");
   }
 
+  inputsContainer.appendChild(document.createElement("br"));
   inputsContainer.appendChild(btnIncreaseBrightness);
 
-  inputsContainer.appendChild(document.createElement("br"));
-  inputsContainer.appendChild(document.createElement("br"));
+  //inputsContainer.appendChild(document.createElement("br"));
+  //inputsContainer.appendChild(document.createElement("br"));
 
   var btnReduceBrightness = document.createElement("input");
   btnReduceBrightness.type = "button";
   btnReduceBrightness.classList.add("btn")
   btnReduceBrightness.classList.add("btn-default");
-  btnReduceBrightness.value = "Reduzir <<";
+  btnReduceBrightness.value = "<< Reduzir";
+  btnReduceBrightness.style.float = "left";
+  btnReduceBrightness.style.width = "110px";
 
   btnReduceBrightness.onclick = function () {
     setBrightnessFilter("-");
