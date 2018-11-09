@@ -806,3 +806,82 @@ function applyMidpointMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoo
   } 
   return imgMatrix;
 }
+
+function applyWaveletFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) {
+
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrixAnterior = JSON.parse(JSON.stringify(imgMatrixOriginal));
+  var imgMatrixAtual = JSON.parse(JSON.stringify(imgMatrixOriginal));
+  var imgMatrixNova = JSON.parse(JSON.stringify(imgMatrixOriginal));
+  //console.log(imgMatrix);
+
+  // Loop da linha
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna+=2)
+    {
+      var firstPixel = imgMatrixAtual[linha][coluna];
+      var secondPixel = imgMatrixAtual[linha][coluna + 1];
+      
+      var mediaR = ( firstPixel.r + secondPixel.r ) / 2;
+      var mediaG = ( firstPixel.g + secondPixel.g ) / 2;
+      var mediaB = ( firstPixel.b + secondPixel.b ) / 2;
+
+      var subR = ( firstPixel.r - secondPixel.r ) / 2;
+      var subG = ( firstPixel.g - secondPixel.g ) / 2;
+      var subB = ( firstPixel.b - secondPixel.b ) / 2;
+
+      var indexMediaCol = coluna / 2;
+      var indexSubCol = ( coluna / 2 ) + ( imgWidth / 2 );
+
+      var currentPixelMedia = imgMatrixNova[linha][indexMediaCol];
+      var currentPixelSub = imgMatrixNova[linha][indexSubCol];
+
+      currentPixelMedia.r = mediaR;
+      currentPixelMedia.g = mediaG;
+      currentPixelMedia.b = mediaB;
+
+      currentPixelSub.r = subR;
+      currentPixelSub.g = subG;
+      currentPixelSub.b = subB;
+      
+    }
+  }
+
+  var imgMatrixAtual = JSON.parse(JSON.stringify(imgMatrixNova));
+
+  // Loop da coluna
+  for(var coluna = 0; coluna < imgWidth; coluna++)
+  {
+    for(var linha = 0; linha < imgHeight; linha+=2)
+    {
+      var firstPixel = imgMatrixAtual[linha][coluna];
+      var secondPixel = imgMatrixAtual[linha + 1][coluna];
+      
+      var mediaR = ( firstPixel.r + secondPixel.r ) / 2;
+      var mediaG = ( firstPixel.g + secondPixel.g ) / 2;
+      var mediaB = ( firstPixel.b + secondPixel.b ) / 2;
+
+      var subR = ( firstPixel.r - secondPixel.r ) / 2;
+      var subG = ( firstPixel.g - secondPixel.g ) / 2;
+      var subB = ( firstPixel.b - secondPixel.b ) / 2;
+
+      var indexMediaLinha = linha / 2;
+      var indexSubLinha = ( linha / 2 ) + ( imgHeight / 2 );
+
+      var currentPixelMedia = imgMatrixNova[indexMediaLinha][coluna];
+      var currentPixelSub = imgMatrixNova[indexSubLinha][coluna];
+
+      currentPixelMedia.r = mediaR;
+      currentPixelMedia.g = mediaG;
+      currentPixelMedia.b = mediaB;
+
+      currentPixelSub.r = subR;
+      currentPixelSub.g = subG;
+      currentPixelSub.b = subB;
+      
+    }
+  }
+
+  return imgMatrixNova;
+}

@@ -911,3 +911,21 @@ function setFuncao() {
     document.getElementById("filtros-container").style.display = "none";
   }
 }
+
+function setWaveletFilter() {
+
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("wavelet-item");
+  
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyWaveletFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
