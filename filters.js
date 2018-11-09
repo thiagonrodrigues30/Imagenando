@@ -807,18 +807,108 @@ function applyMidpointMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoo
   return imgMatrix;
 }
 
+function applyWaveletCommonFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) {
+
+  var widthTemp = imgWidth;
+  var heightTemp = imgHeight;
+
+  var imgMatrixTemp = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  for(var i = 0; i <= 3; i++)
+  {
+    var imgMatrixNova = haarMatrixStep(imgMatrixTemp, 0, widthTemp - 1, 0, heightTemp - 1);
+
+    widthTemp = widthTemp / 2;
+    heightTemp = heightTemp / 2;
+    var imgMatrixTemp = JSON.parse(JSON.stringify(imgMatrixNova));
+  }
+
+  return imgMatrixNova;
+}
+
 function applyWaveletFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) {
 
-  //Copia o valor da matriz para nao modificar a original
+  var subImagesArrayAtual = [];
+  var subImagesArrayNovo = [];
+
+  subImagesArrayAtual.push(new SubImage(0, imgWidth - 1, 0, imgHeight - 1));
+
   var imgMatrixAnterior = JSON.parse(JSON.stringify(imgMatrixOriginal));
-  var imgMatrixAtual = JSON.parse(JSON.stringify(imgMatrixOriginal));
-  var imgMatrixNova = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  var maxInteration = 4;
+  var currentInteration = 0;
+
+  while(subImagesArrayAtual.length > 0 && currentInteration < maxInteration)
+  {
+
+    for(var i = 0; i < subImagesArrayAtual.length; i++)
+    {
+      var currentSubImage = subImagesArrayAtual[i];
+      var imgMatrixNova = haarMatrixStep(imgMatrixAnterior, currentSubImage.imgWidthBegin, currentSubImage.imgWidthEnd, currentSubImage.imgHeightBegin, currentSubImage.imgHeightEnd);
+    
+      // Verifica se a energia nova é menor que a anterior
+      if(!isFinished(imgMatrixAnterior, imgMatrixNova, currentSubImage.imgWidthBegin, currentSubImage.imgWidthEnd, currentSubImage.imgHeightBegin, currentSubImage.imgHeightEnd))
+      {
+        // Subimagem do 1º quadrante
+        subImagesArrayNovo.push(new SubImage(
+          currentSubImage.imgWidthBegin, 
+          ((currentSubImage.imgWidthEnd - currentSubImage.imgWidthBegin + 1) / 2) - 1,
+          currentSubImage.imgHeightBegin,
+          ((currentSubImage.imgHeightEnd - currentSubImage.imgHeightBegin + 1) / 2) - 1
+        ));
+
+        // Subimagem do 2º quadrante
+        subImagesArrayNovo.push(new SubImage(
+          currentSubImage.imgWidthBegin, 
+          ((currentSubImage.imgWidthEnd - currentSubImage.imgWidthBegin + 1) / 2) - 1,
+          ((currentSubImage.imgHeightEnd - currentSubImage.imgHeightBegin + 1) / 2),
+          currentSubImage.imgHeightEnd
+        ));
+
+        // Subimagem do 3º quadrante
+        subImagesArrayNovo.push(new SubImage(
+          ((currentSubImage.imgWidthEnd - currentSubImage.imgWidthBegin + 1) / 2), 
+          currentSubImage.imgWidthEnd,
+          ((currentSubImage.imgHeightEnd - currentSubImage.imgHeightBegin + 1) / 2),
+          currentSubImage.imgHeightEnd
+        ));
+
+        // Subimagem do 4º quadrante
+        subImagesArrayNovo.push(new SubImage(
+          ((currentSubImage.imgWidthEnd - currentSubImage.imgWidthBegin + 1) / 2), 
+          currentSubImage.imgWidthEnd,
+          currentSubImage.imgHeightBegin,
+          ((currentSubImage.imgHeightEnd - currentSubImage.imgHeightBegin + 1) / 2) - 1
+        ));
+
+        var imgMatrixAnterior = JSON.parse(JSON.stringify(imgMatrixNova));
+      }
+
+    }
+
+    subImagesArrayAtual = JSON.parse(JSON.stringify(subImagesArrayNovo));
+    subImagesArrayNovo = [];
+
+    currentInteration++;
+  }
+
+  var imgMatrixNova = JSON.parse(JSON.stringify(imgMatrixAnterior));
+
+  return imgMatrixNova;
+}
+
+function haarMatrixStep(imgMatrix, imgWidthBegin, imgWidthEnd, imgHeightBegin, imgHeightEnd) {
+  
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrixAnterior = JSON.parse(JSON.stringify(imgMatrix));
+  var imgMatrixAtual = JSON.parse(JSON.stringify(imgMatrix));
+  var imgMatrixNova = JSON.parse(JSON.stringify(imgMatrix));
   //console.log(imgMatrix);
 
   // Loop da linha
-  for(var linha = 0; linha < imgHeight; linha++)
+  for(var linha = imgHeightBegin; linha <= imgHeightEnd; linha++)
   {
-    for(var coluna = 0; coluna < imgWidth; coluna+=2)
+    for(var coluna = imgWidthBegin; coluna <= imgWidthEnd; coluna+=2)
     {
       var firstPixel = imgMatrixAtual[linha][coluna];
       var secondPixel = imgMatrixAtual[linha][coluna + 1];
@@ -831,9 +921,9 @@ function applyWaveletFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) {
       var subG = ( firstPixel.g - secondPixel.g ) / 2;
       var subB = ( firstPixel.b - secondPixel.b ) / 2;
 
-      var indexMediaCol = coluna / 2;
-      var indexSubCol = ( coluna / 2 ) + ( imgWidth / 2 );
-
+      var indexMediaCol = ((coluna - imgWidthBegin) / 2 ) + imgWidthBegin;
+      var indexSubCol = ((coluna - imgWidthBegin) / 2 ) + ( (imgWidthEnd - imgWidthBegin + 1) / 2 ) + imgWidthBegin;
+      
       var currentPixelMedia = imgMatrixNova[linha][indexMediaCol];
       var currentPixelSub = imgMatrixNova[linha][indexSubCol];
 
@@ -851,9 +941,9 @@ function applyWaveletFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) {
   var imgMatrixAtual = JSON.parse(JSON.stringify(imgMatrixNova));
 
   // Loop da coluna
-  for(var coluna = 0; coluna < imgWidth; coluna++)
+  for(var coluna = imgWidthBegin; coluna <= imgWidthEnd; coluna++)
   {
-    for(var linha = 0; linha < imgHeight; linha+=2)
+    for(var linha = imgHeightBegin; linha <= imgHeightEnd; linha+=2)
     {
       var firstPixel = imgMatrixAtual[linha][coluna];
       var secondPixel = imgMatrixAtual[linha + 1][coluna];
@@ -866,8 +956,8 @@ function applyWaveletFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) {
       var subG = ( firstPixel.g - secondPixel.g ) / 2;
       var subB = ( firstPixel.b - secondPixel.b ) / 2;
 
-      var indexMediaLinha = linha / 2;
-      var indexSubLinha = ( linha / 2 ) + ( imgHeight / 2 );
+      var indexMediaLinha = ((linha - imgHeightBegin) / 2 ) + imgHeightBegin;
+      var indexSubLinha = ((linha - imgHeightBegin) / 2 ) + ( (imgHeightEnd - imgHeightBegin + 1) / 2 ) + imgHeightBegin;
 
       var currentPixelMedia = imgMatrixNova[indexMediaLinha][coluna];
       var currentPixelSub = imgMatrixNova[indexSubLinha][coluna];
@@ -884,4 +974,32 @@ function applyWaveletFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) {
   }
 
   return imgMatrixNova;
+}
+
+function isFinished(imgMatrixAnterior, imgMatrixNova, imgWidthBegin, imgWidthEnd, imgHeightBegin, imgHeightEnd) {
+  var matrixAnteriorEnergy = 0;
+  var matrixNovaEnergy = 0;
+
+  // Calcula energia da matriz anterior
+  for(var linha = imgHeightBegin; linha <= imgHeightEnd; linha++)
+  {
+    for(var coluna = imgWidthBegin; coluna <= imgWidthEnd; coluna++)
+    {
+      var currentPixelAnterior = imgMatrixAnterior[linha][coluna];
+      var currentPixelNova = imgMatrixNova[linha][coluna];
+      
+      matrixAnteriorEnergy += currentPixelAnterior.r + currentPixelAnterior.g + currentPixelAnterior.b;
+      matrixNovaEnergy += currentPixelNova.r + currentPixelNova.g + currentPixelNova.b;
+    }
+  }
+
+  if(matrixNovaEnergy < matrixAnteriorEnergy)
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+
 }

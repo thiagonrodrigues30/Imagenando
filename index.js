@@ -912,6 +912,24 @@ function setFuncao() {
   }
 }
 
+function setWaveletCommonFilter() {
+
+  // Limpa o container de parametros e tira os icones de parametros
+  setParamsIcon(-1);
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("wavelet-common-item");
+  
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyWaveletCommonFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
 function setWaveletFilter() {
 
   // Limpa o container de parametros e tira os icones de parametros
