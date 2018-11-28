@@ -57,6 +57,7 @@
                   <option value="cores">Cores</option>
                   <option value="img-sub">Subtração de Imagens</option>
                   <option value="chroma-key">Chroma Key</option>
+                  <option value="compression">Compressão de Imagens</option>
                 </select>
               </h5>
               </center>
@@ -291,6 +292,23 @@
             </center>
 
           </div>
+
+          <div id="compression-container">
+            <center>
+              <h5><strong>Compressão de Imagens</strong></h5>
+            </center><br>
+
+            <br><br>
+            <center>
+              <input type="button" class="btn btn-default" value="Comprimir" onclick="setCompression()" >
+            </center>
+
+            <br><br>
+            <center>
+              <input type="button" class="btn btn-default" value="Descomprimir" onclick="setDecompression()" >
+            </center>
+
+          </div>
   
         </div>
 
@@ -303,6 +321,7 @@
     <script src="inputs.js"></script>
     <script src="colorComponents.js"></script>
     <script src="otherFunctions.js"></script>
+    <script src="compressor.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

@@ -25,6 +25,11 @@ var paramsIcon = document.createElement("img");
 paramsIcon.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACaSURBVDhP3dFBCoJAFIDhMaUWgXSC6Dqto6vkCVy4FQxyWweodbRv3UVq5Tb/J6OIvaSZZT98CMO8GVFDATbYOlqjKcbbwxNde2ibxuzQNcEJ2kZNio8iXKAN9BX42gw3aIPiCPnoo81xx3D4jBA/tUCOg5VhCqfkxqtVyoJrL7Sv/5AF1/7ggAQVvA+QVpC/4X1A29I+BxlTAwB5WfLP2jdRAAAAAElFTkSuQmCC";
 
 
+// Compression parameters
+var coefComprWavelet = 4;
+
+var compressedImgMatrix;
+
 // Carrega a imagem pela primeira vez
 function loadImage(input){
 
@@ -885,6 +890,7 @@ function setFuncao() {
     document.getElementById("color-show-container").style.display = "none";
     document.getElementById("image-subtraction-container").style.display = "none";
     document.getElementById("chroma-key-container").style.display = "none";
+    document.getElementById("compression-container").style.display = "none";
   }
   else if(op == "cores")
   {
@@ -893,6 +899,7 @@ function setFuncao() {
     document.getElementById("filtros-container").style.display = "none";
     document.getElementById("image-subtraction-container").style.display = "none";
     document.getElementById("chroma-key-container").style.display = "none";
+    document.getElementById("compression-container").style.display = "none";
   }
   else if(op == "img-sub")
   {
@@ -901,6 +908,7 @@ function setFuncao() {
     document.getElementById("color-show-container").style.display = "none";
     document.getElementById("filtros-container").style.display = "none";
     document.getElementById("chroma-key-container").style.display = "none";
+    document.getElementById("compression-container").style.display = "none";
   }
   else if(op == "chroma-key")
   {
@@ -909,7 +917,18 @@ function setFuncao() {
     document.getElementById("color-container").style.display = "none";
     document.getElementById("color-show-container").style.display = "none";
     document.getElementById("filtros-container").style.display = "none";
+    document.getElementById("compression-container").style.display = "none";
   }
+  else if(op == "compression")
+  {
+    document.getElementById("compression-container").style.display = "block";
+    document.getElementById("chroma-key-container").style.display = "none";
+    document.getElementById("image-subtraction-container").style.display = "none";
+    document.getElementById("color-container").style.display = "none";
+    document.getElementById("color-show-container").style.display = "none";
+    document.getElementById("filtros-container").style.display = "none";
+  }
+
 }
 
 function setWaveletCommonFilter() {
@@ -921,7 +940,7 @@ function setWaveletCommonFilter() {
   setFilterButtonBackground("wavelet-common-item");
   
   // Calcula a nova matriz e aplica o filtro
-  var newMatrix = applyWaveletCommonFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight);
+  var newMatrix = applyWaveletCommonFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, 4);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);

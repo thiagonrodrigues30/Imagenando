@@ -807,14 +807,14 @@ function applyMidpointMatrix(imgMatrixOriginal, imgWidth, imgHeight, neighborhoo
   return imgMatrix;
 }
 
-function applyWaveletCommonFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) {
+function applyWaveletCommonFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, steps) {
 
   var widthTemp = imgWidth;
   var heightTemp = imgHeight;
 
   var imgMatrixTemp = JSON.parse(JSON.stringify(imgMatrixOriginal));
 
-  for(var i = 0; i <= 3; i++)
+  for(var i = 0; i < steps; i++)
   {
     var imgMatrixNova = haarMatrixStep(imgMatrixTemp, 0, widthTemp - 1, 0, heightTemp - 1);
 
@@ -822,7 +822,7 @@ function applyWaveletCommonFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) 
     heightTemp = heightTemp / 2;
     var imgMatrixTemp = JSON.parse(JSON.stringify(imgMatrixNova));
   }
-
+  
   return imgMatrixNova;
 }
 
