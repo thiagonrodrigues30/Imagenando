@@ -1,12 +1,28 @@
+var downloadComprFile = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, name) {
+        var blob = new Blob(data, {type: "octet/stream"}),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = name;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+
 function setCompression() {
   
   // Calcula a nova matriz e aplica o filtro
-  var newMatrix = applyWaveletCommonFilterMatrix(currentMatrix, imgWidth, imgHeight, coefComprWavelet);
+  // var newMatrix = applyWaveletCommonFilterMatrix(currentMatrix, imgWidth, imgHeight, coefComprWavelet);
 
-  // Arredonda os valores decimais da matriz
-  var imgMatrix = roundMatrix(newMatrix, imgWidth, imgHeight);
+  // // Arredonda os valores decimais da matriz
+  // var imgMatrix = roundMatrix(newMatrix, imgWidth, imgHeight);
 
-  generateComprFile(imgMatrix, imgWidth, imgHeight);
+  // generateComprFile(imgMatrix, imgWidth, imgHeight);
+
+  downloadComprFile([01001], 'img_compact.imgnd');
 
 }
 
