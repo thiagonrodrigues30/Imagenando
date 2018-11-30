@@ -43,6 +43,7 @@ function setCompression() {
   // // Arredonda os valores decimais da matriz
   // var imgMatrix = roundMatrix(newMatrix, imgWidth, imgHeight);
 
+  // TO DO: Trocar string de bits pela string retornada nos algoritmos de compressão
   generateComprFile("0110110100011110011011");
 }
 
@@ -96,9 +97,9 @@ function readComprFile(arrayASCII) {
 
 function setDecompression(file) {
 
+  // TO DO: Extrair dados do file e setar no vetor arrayASCII
+  var arrayASCII = [];
 	imgMatrix = readComprFile(arrayASCII);
-
-  // console.log("0110110100011110011011");
   
   // Calcula a nova matriz e aplica o filtro
   // var newMatrix = undoWaveletCommonFilterMatrix(imgMatrix, imgWidth, imgHeight);
