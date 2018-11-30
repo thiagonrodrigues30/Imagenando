@@ -3,7 +3,7 @@ var downloadComprFile = (function () {
     document.body.appendChild(a);
     a.style = "display: none";
     return function (data, name) {
-        var blob = new Blob(data, {type: "octet/stream"}),
+        var blob = new Blob(data, {type: "application/octet-binary"}),
             url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = name;
@@ -11,6 +11,30 @@ var downloadComprFile = (function () {
         window.URL.revokeObjectURL(url);
     };
 }());
+
+function byteString(n, dif) {
+  if(dif) {
+    return n.substr(dif, n.length - 1).toString();
+  }
+  return ("000000000" + n.toString(2)).substr(-8).toString();
+}
+
+let ABC = {
+  toAscii(bin) {
+    return bin.replace(/\s*[01]{8}\s*/g, function(bin) {
+      return String.fromCharCode(parseInt(bin, 2));
+    });
+  },
+  toBinary(str, spaceSeparatedOctets) {
+    return str.replace(/[\s\S]/g, function(str) {
+      str = ABC.zeroPad(str.charCodeAt().toString(2));
+      return !1 == spaceSeparatedOctets ? str : str + ' '
+    });
+  },
+  zeroPad(num) {
+    return '00000000'.slice(String(num).length) + num;
+  }
+};
 
 function setCompression() {
   
@@ -20,46 +44,58 @@ function setCompression() {
   // // Arredonda os valores decimais da matriz
   // var imgMatrix = roundMatrix(newMatrix, imgWidth, imgHeight);
 
-  // generateComprFile(imgMatrix, imgWidth, imgHeight);
-
-  downloadComprFile([01001], 'img_compact.imgnd');
-
+  generateComprFile(imgMatrix, imgWidth, imgHeight);
 }
 
 function generateComprFile(imgMatrix, imgWidth, imgHeight) {
 	// Fazer depois, funcao que gera o arquivo para baixar
+  // TO DO: Trocar o número binário e colocar num loop pra setar os binários no array
+  var arrayASCII = [];
+  var byte = byteString("01100");
+  arrayASCII[0] = ABC.toAscii(byteString(byte.length - "01100".length));
+  arrayASCII[1] = ABC.toAscii(byte);
 
+  downloadComprFile(arrayASCII, 'img_compact.imgnd');
 	// tirar isso depois
-	compressedImgMatrix = imgMatrix; // funciona como se fosse os dados salvos no arquivo
+	// compressedImgMatrix = imgMatrix; // funciona como se fosse os dados salvos no arquivo
 
-  var newImgData = parseToImageData(imgMatrix, imgWidth, imgHeight);
+  // var newImgData = parseToImageData(imgMatrix, imgWidth, imgHeight);
 
-  ctx.putImageData(newImgData, 0, 0);
-  setHistogram();
+  // ctx.putImageData(newImgData, 0, 0);
+  // setHistogram();
 }
 
 function readComprFile() {
 	// Fazer depois, funcao que le o arquivo gerado
-
+  // var arrayASCII = [];
+  // var byte = byteString("01100");
+  // arrayASCII[0] = ABC.toAscii(byteString(byte.length - "01100".length));
+  // arrayASCII[1] = ABC.toAscii(byte);
+  // TO DO: Trocar arrayASCII por dados lidos do arquivo
+  
+  var arrayBinary = [];
+  arrayBinary[0] = ABC.toBinary(arrayASCII[0]);
+  arrayBinary[1] = ABC.toBinary(arrayASCII[1]);
+  var arrayBits = byteString(arrayBinary[1], parseInt(arrayBinary[0], 2));
 	return compressedImgMatrix;
 }
 
-function setDecompression() {
+function setDecompression(file) {
 
-	imgMatrix = readComprFile();
+	imgMatrix = readComprFile(file);
   
   // Calcula a nova matriz e aplica o filtro
-  var newMatrix = undoWaveletCommonFilterMatrix(imgMatrix, imgWidth, imgHeight);
+  // var newMatrix = undoWaveletCommonFilterMatrix(imgMatrix, imgWidth, imgHeight);
 
 
 
-  // Mostra a imagem no final do processo de descompressão
-  currentMatrix = newMatrix;
+  // // Mostra a imagem no final do processo de descompressão
+  // currentMatrix = newMatrix;
 
-  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+  // var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
 
-  ctx.putImageData(newImgData, 0, 0);
-  setHistogram();
+  // ctx.putImageData(newImgData, 0, 0);
+  // setHistogram();
 }
 
 function undoWaveletCommonFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight) {
