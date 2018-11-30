@@ -11,3 +11,10 @@ function SubImage(imgWidthBegin, imgWidthEnd, imgHeightBegin, imgHeightEnd) {
 	this.imgHeightBegin = imgHeightBegin; 
 	this.imgHeightEnd = imgHeightEnd;
 }
+
+function HuffmanNode(prob) {
+	this.prob = prob;
+	this.id = 0;
+	this.code = "";
+	this.intensity = "";
+}

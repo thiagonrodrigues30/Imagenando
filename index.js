@@ -26,9 +26,10 @@ paramsIcon.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf
 
 
 // Compression parameters
-var coefComprWavelet = 4;
+var coefComprWavelet = 9;
 
-var compressedImgMatrix;
+//apagar depois esse
+var compressedBitSequence;
 
 // Carrega a imagem pela primeira vez
 function loadImage(input){
