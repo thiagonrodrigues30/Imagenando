@@ -14,7 +14,7 @@ var downloadComprFile = (function () {
 
 function byteString(n, dif) {
   if(dif) {
-    return n.substr(dif, n.length - 1).toString();
+    return n.substr(dif).toString();
   }
   return ("000000000" + n.toString(2)).substr(-8).toString();
 }
@@ -27,8 +27,7 @@ let ABC = {
   },
   toBinary(str, spaceSeparatedOctets) {
     return str.replace(/[\s\S]/g, function(str) {
-      str = ABC.zeroPad(str.charCodeAt().toString(2));
-      return !1 == spaceSeparatedOctets ? str : str + ' '
+      return ABC.zeroPad(str.charCodeAt().toString(2));
     });
   },
   zeroPad(num) {
@@ -44,18 +43,29 @@ function setCompression() {
   // // Arredonda os valores decimais da matriz
   // var imgMatrix = roundMatrix(newMatrix, imgWidth, imgHeight);
 
-  generateComprFile(imgMatrix, imgWidth, imgHeight);
+  generateComprFile("0110110100011110011011");
 }
 
-function generateComprFile(imgMatrix, imgWidth, imgHeight) {
-	// Fazer depois, funcao que gera o arquivo para baixar
-  // TO DO: Trocar o número binário e colocar num loop pra setar os binários no array
+function generateComprFile(stringBits) {
   var arrayASCII = [];
-  var byte = byteString("01100");
-  arrayASCII[0] = ABC.toAscii(byteString(byte.length - "01100".length));
-  arrayASCII[1] = ABC.toAscii(byte);
+
+  for(var i = 0; i < stringBits.length; i += 2) { 
+    var byte = stringBits.substr(0, 8);
+    var byteDif = byte;
+    
+    if(stringBits.length < 8) {
+      byteDif = byteString(byteDif);
+    }
+
+    arrayASCII[i] = ABC.toAscii(byteString(byteDif.length - byte.length));
+    arrayASCII[i + 1] = ABC.toAscii(byteDif);
+
+    stringBits = stringBits.substr(8);
+  }
 
   downloadComprFile(arrayASCII, 'img_compact.imgnd');
+
+  return arrayASCII;
 	// tirar isso depois
 	// compressedImgMatrix = imgMatrix; // funciona como se fosse os dados salvos no arquivo
 
@@ -65,24 +75,30 @@ function generateComprFile(imgMatrix, imgWidth, imgHeight) {
   // setHistogram();
 }
 
-function readComprFile() {
-	// Fazer depois, funcao que le o arquivo gerado
-  // var arrayASCII = [];
-  // var byte = byteString("01100");
-  // arrayASCII[0] = ABC.toAscii(byteString(byte.length - "01100".length));
-  // arrayASCII[1] = ABC.toAscii(byte);
-  // TO DO: Trocar arrayASCII por dados lidos do arquivo
+function readComprFile(arrayASCII) {
   
   var arrayBinary = [];
-  arrayBinary[0] = ABC.toBinary(arrayASCII[0]);
-  arrayBinary[1] = ABC.toBinary(arrayASCII[1]);
-  var arrayBits = byteString(arrayBinary[1], parseInt(arrayBinary[0], 2));
-	return compressedImgMatrix;
+
+  for(var i = 0; i < arrayASCII.length; i += 2) {
+    arrayBinary[i] = ABC.toBinary(arrayASCII[i]);
+    arrayBinary[i + 1] = ABC.toBinary(arrayASCII[i + 1]);
+  }
+
+  var stringBits = "";
+
+  for(var i = 0; i < arrayBinary.length; i += 2) {
+    var arrayTemp = byteString(arrayBinary[i + 1], parseInt(arrayBinary[i], 2));
+    stringBits += arrayTemp;
+  }
+
+	// return compressedImgMatrix;
 }
 
 function setDecompression(file) {
 
-	imgMatrix = readComprFile(file);
+	imgMatrix = readComprFile(arrayASCII);
+
+  // console.log("0110110100011110011011");
   
   // Calcula a nova matriz e aplica o filtro
   // var newMatrix = undoWaveletCommonFilterMatrix(imgMatrix, imgWidth, imgHeight);
