@@ -28,8 +28,6 @@ paramsIcon.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf
 // Compression parameters
 var coefComprWavelet = 9;
 
-//apagar depois esse
-var compressedBitSequence;
 
 // Carrega a imagem pela primeira vez
 function loadImage(input){

@@ -3,7 +3,7 @@ var downloadComprFile = (function () {
     document.body.appendChild(a);
     a.style = "display: none";
     return function (data, name) {
-        var blob = new Blob([data], {type: "octet/stream"}), //application/octet-binary  octet/stream
+        var blob = new Blob([data], {type: "octet/stream"}),
             url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = name;
@@ -12,102 +12,34 @@ var downloadComprFile = (function () {
     };
 }());
 
+function loadDescompacFile(input){
+  var fileCompac;
+
+  // Extrai os dados do arquivo
+  if (input.files && input.files[0]) {
+
+    var reader = new FileReader();
+    
+    reader.onload = function (e) {
+      fileCompac = e.target.result;
+    };
+
+    reader.onloadend = function (e) {
+      //console.log(new Uint8Array(fileCompac));
+      setDecompression(new Uint8Array(fileCompac));
+    };
+
+    //reader.readAsDataURL(input.files[0]);
+    reader.readAsArrayBuffer(input.files[0]);
+  }
+
+}
+
 function byteString(n, dif) {
   if(dif) {
     return n.substr(dif).toString();
   }
   return ("000000000" + n.toString(2)).substr(-8).toString();
-}
-
-let ABC = {
-  toAscii(bin) {
-    return bin.replace(/\s*[01]{8}\s*/g, function(bin) {
-      return String.fromCharCode(parseInt(bin, 2));
-    });
-  },
-  toBinary(str, spaceSeparatedOctets) {
-    return str.replace(/[\s\S]/g, function(str) {
-      return ABC.zeroPad(str.charCodeAt().toString(2));
-    });
-  },
-  zeroPad(num) {
-    return '00000000'.slice(String(num).length) + num;
-  }
-};
-
-/*
-function bin2String(array) {
-  var result = "";
-  for (var i = 0; i < array.length; i++) {
-    result += String.fromCharCode(parseInt(array[i], 2));
-  }
-  return result;
-}
-
-function string2Bin(str) {
-  var result = [];
-  for (var i = 0; i < str.length; i++) {
-    result.push(str.charCodeAt(i).toString(2));
-  }
-  return result;
-}
-*/
-
-function bin2String(stringBits) {
-	//console.log("Antes = " + stringBits.length / 8);
-  var arrayASCII = [];
-
-  var i = 0;
-  while(stringBits.length > 0){
-    var byte = stringBits.substr(0, 8);
-    var byteDif = byte;
-    
-    if(stringBits.length < 8) {
-      byteDif = byteString(byteDif);
-      arrayASCII[i] = ABC.toAscii(byteString(byteDif.length - byte.length));
-      i++;
-    }
-    
-    arrayASCII[i] = ABC.toAscii(byteDif);
-
-    stringBits = stringBits.substr(8);
-    i++;
-  }
-
-  return arrayASCII;
-}
-
-function string2Bin(arrayASCII) {
-	var arrayBinary = [];
-
-  for(var i = 0; i < arrayASCII.length; i++) {
-    arrayBinary[i] = ABC.toBinary(arrayASCII[i]);
-  }
-  /*
-  console.log(arrayBinary[0]);
-  console.log(arrayBinary[1]);
-  console.log(arrayBinary[2]);
-  console.log(arrayBinary[3]);
-  console.log(arrayBinary[4]);
-*/
-  var stringBits = "";
-
-  for(var i = 0; i < arrayBinary.length; i++) {
-    
-    if(i >= arrayBinary.length - 2)
-    {
-    	stringBits += arrayBinary[i + 1].substr(parseInt(arrayBinary[i], 2));
-    	i += 2;
-    }
-    else
-    {
-    	stringBits += arrayBinary[i];
-    }
-
-  }
-  console.log("Depois = " + stringBits.length / 8);
-
-	return stringBits;
 }
 
 function bin2Number(stringBits) {
@@ -139,6 +71,27 @@ function bin2Number(stringBits) {
   var arrayInt = new Uint8Array(arrayIntTemp);
 
   return arrayInt;
+}
+
+function number2Bin(arrayInt) {
+	var arrayBinary = [];
+
+	var stringBits = "";
+
+  for(var i = 0; i < arrayInt.length - 2; i++) {
+    stringBits += byteString(arrayInt[i].toString(2));
+  }
+  
+  var numAdded = arrayInt[arrayInt.length - 2];
+
+  var lastByte = byteString(arrayInt[arrayInt.length - 1].toString(2));
+  
+  stringBits += lastByte.substr(numAdded);
+
+
+  //console.log("Depois = " + stringBits.length / 8);
+
+	return stringBits;
 }
 
 function setCompression() {
@@ -173,9 +126,6 @@ function generateComprFile(stringBits, imgMatrix, imgWidth, imgHeight) {
 
   downloadComprFile(arrayInt, 'img_compact.imgnd');
 
-  
-	// funciona como se fosse os dados salvos no arquivo
-	compressedBitSequence = arrayASCII;
 	
   var newImgData = parseToImageData(imgMatrix, imgWidth, imgHeight);
   ctx.putImageData(newImgData, 0, 0);
@@ -183,23 +133,17 @@ function generateComprFile(stringBits, imgMatrix, imgWidth, imgHeight) {
   
 }
 
-function readComprFile(arrayASCII) {
-
-	var arrayASCII = compressedBitSequence;
+function readComprFile(arrayInt) {
   
- 	var stringBits = string2Bin(arrayASCII);
+ 	//var stringBits = string2Bin(arrayInt);
+ 	var stringBits = number2Bin(arrayInt);
 
 	return stringBits;
 }
 
-function setDecompression(file) {
-	//Tira os bits referente a codificacao
-	//file = file.substring(13);
-
-  // TO DO: Extrair dados do file e setar no vetor arrayASCII
+function setDecompression(arrayInt) {
   
-  var arrayASCII = [];
-	var bitSequence = readComprFile(file);
+	var bitSequence = readComprFile(arrayInt);
 	//console.log(bitSequence.length / 8);
 
 	
@@ -654,25 +598,3 @@ function extractBitsImage(huffmanTree, bitSequence, imgWidth, imgHeight) {
 	return pixelsArray;
 }
 
-function loadDescompacFile(input){
-  var fileCompac;
-
-  //Poe a imagem do input file no elemento img do html
-  if (input.files && input.files[0]) {
-
-    var reader = new FileReader();
-    
-
-    reader.onload = function (e) {
-      fileCompac = e.target.result;
-    };
-
-    reader.onloadend = function (e) {
-      //loadCanvas(img);
-      setDecompression(fileCompac);
-    };
-
-    reader.readAsDataURL(input.files[0]);
-  }
-
-}
