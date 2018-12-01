@@ -296,8 +296,8 @@
           <div id="compression-container">
             
             <center>
-              <label for='imgFile' id="input-file-label" style="display: inline-block;">Escolher arquivo</label>
-              <input type="file" id="imgFile" style="display: none;" onchange="loadFile(this)" /><br>
+              <label for='descompacFile' id="input-file-label" style="display: inline-block;">Escolher arquivo</label>
+              <input type="file" id="descompacFile" style="display: none;" onchange="loadDescompacFile(this)" /><br>
             </center><br>
 
             <center>
@@ -311,7 +311,7 @@
 
             <br><br>
             <center>
-              <input type="button" class="btn btn-default" value="Descomprimir" onclick="setDecompression()" >
+              <input type="button" class="btn btn-default" value="Descomprimir" onclick="setDecompression(['00'])" >
             </center>
 
             <br><br>
@@ -329,10 +329,10 @@
 
     <script src="classes.js"></script>
     <script src="filters.js"></script>
+    <script src="compressor.js"></script>
     <script src="inputs.js"></script>
     <script src="colorComponents.js"></script>
     <script src="otherFunctions.js"></script>
-    <script src="compressor.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

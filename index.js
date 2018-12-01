@@ -52,15 +52,6 @@ function loadImage(input){
 
 }
 
-function loadFile(input){
-  //Poe a imagem do input file no elemento img do html
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    setDecompression(input.files[0]);
-  }
-
-}
-
 function loadCanvas(img){
 
   setImageDimension(img);
