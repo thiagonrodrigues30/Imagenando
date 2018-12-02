@@ -295,11 +295,7 @@
 
           <div id="compression-container">
             
-            <center>
-              <label for='descompacFile' id="input-file-label" style="display: inline-block;">Escolher arquivo</label>
-              <input type="file" id="descompacFile" style="display: none;" onchange="loadDescompacFile(this)" /><br>
-            </center><br>
-
+            
             <center>
               <h5><strong>Compressão de Imagens</strong></h5>
             </center><br>
@@ -309,15 +305,11 @@
               <input type="button" class="btn btn-default" value="Comprimir" onclick="setCompression()" >
             </center>
 
-            <br><br>
+            <br><br><br><br>
             <center>
-              <input type="button" class="btn btn-default" value="Descomprimir" onclick="setDecompression(['00'])" >
-            </center>
-
-            <br><br>
-            <center>
-              <p id="compression-status">------</p>
-            </center>
+              <label for='descompacFile' id="input-file-label" style="display: inline-block;">Arquivo para Descompressão</label>
+              <input type="file" id="descompacFile" style="display: none;" onchange="loadDescompacFile(this)" /><br>
+            </center><br>
 
           </div>
   

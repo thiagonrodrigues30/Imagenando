@@ -25,11 +25,9 @@ function loadDescompacFile(input){
     };
 
     reader.onloadend = function (e) {
-      //console.log(new Uint8Array(fileCompac));
       setDecompression(new Uint8Array(fileCompac));
     };
 
-    //reader.readAsDataURL(input.files[0]);
     reader.readAsArrayBuffer(input.files[0]);
   }
 
@@ -43,11 +41,6 @@ function byteString(n, dif) {
 }
 
 function bin2Number(stringBits) {
-	//console.log("Antes = " + stringBits.length / 8);
-	//var arr = new Uint8Array(2);
-  //arr[0] = 300;
-  //arr[1] = 300;
-  //var encodedData = window.btoa(255);
 
   var arrayIntTemp = [];
 
@@ -89,8 +82,6 @@ function number2Bin(arrayInt) {
   stringBits += lastByte.substr(numAdded);
 
 
-  //console.log("Depois = " + stringBits.length / 8);
-
 	return stringBits;
 }
 
@@ -112,30 +103,19 @@ function setCompression() {
   var bitSequence = bitSequenceHuffman + imgBitSequence;
   
 
-  generateComprFile(bitSequence, imgMatrix, imgWidth, imgHeight);// Tirar os outros parametros depois
+  generateComprFile(bitSequence);// Tirar os outros parametros depois
 
-  // TO DO: Trocar string de bits pela string retornada nos algoritmos de compressão
-  //generateComprFile("0110110100011110011011");
 }
 
-function generateComprFile(stringBits, imgMatrix, imgWidth, imgHeight) {
+function generateComprFile(stringBits) {
 
-  //var arrayASCII = bin2String(stringBits);
   var arrayInt = bin2Number(stringBits);
   
-
   downloadComprFile(arrayInt, 'img_compact.imgnd');
-
-	
-  var newImgData = parseToImageData(imgMatrix, imgWidth, imgHeight);
-  ctx.putImageData(newImgData, 0, 0);
-  setHistogram();
-  
 }
 
 function readComprFile(arrayInt) {
   
- 	//var stringBits = string2Bin(arrayInt);
  	var stringBits = number2Bin(arrayInt);
 
 	return stringBits;
@@ -144,19 +124,19 @@ function readComprFile(arrayInt) {
 function setDecompression(arrayInt) {
   
 	var bitSequence = readComprFile(arrayInt);
-	//console.log(bitSequence.length / 8);
 
-	
 	var tempDesc = descompressBitSequence(bitSequence);
 	var imgMatrix = tempDesc[0];
-	var imgWidth = tempDesc[1];
-	var imgHeight = tempDesc[2];
+	imgWidth = tempDesc[1];
+	imgHeight = tempDesc[2];
 
-  
+
   // Calcula a nova matriz e aplica o filtro
   var newMatrix = undoWaveletCommonFilterMatrix(imgMatrix, imgWidth, imgHeight);
 
-
+  //Seta a largura e altura do canvas para serem iguais a da imagem exibida
+  c.width = imgWidth;
+  c.height = imgHeight;
 
   // Mostra a imagem no final do processo de descompressão
   currentMatrix = newMatrix;
@@ -165,7 +145,6 @@ function setDecompression(arrayInt) {
 
   ctx.putImageData(newImgData, 0, 0);
   setHistogram();
-  
   
 }
 
