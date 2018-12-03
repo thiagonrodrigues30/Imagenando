@@ -1007,6 +1007,7 @@ function isFinished(imgMatrixAnterior, imgMatrixNova, imgWidthBegin, imgWidthEnd
 function applyErosionMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize) {
   //Copia o valor da matriz para nao modificar a original
   var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+  var structuringElement = constructStructuringElement(radiusSize);
 
   // Percorre a matriz de imagem
   for(var linha = 0; linha < imgHeight; linha++)
@@ -1023,8 +1024,8 @@ function applyErosionMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize) 
         for(var colunaEstr = 0; colunaEstr < 2 * radiusSize; colunaEstr++)
         {
           var borderDist = (radiusSize - 1) / 2;
-          var linhaIndex = linha - borderDist + linhaEstr;
-          var colunaIndex = coluna - borderDist + colunaEstr;
+          var linhaIndex = Math.trunc(linha - borderDist + linhaEstr);
+          var colunaIndex = Math.trunc(coluna - borderDist + colunaEstr);
 
           if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
           {
@@ -1065,8 +1066,8 @@ function applyDilationMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize)
         for(var colunaEstr = 0; colunaEstr < 2 * radiusSize; colunaEstr++)
         {
           var borderDist = (radiusSize - 1) / 2;
-          var linhaIndex = linha - borderDist + linhaEstr;
-          var colunaIndex = coluna - borderDist + colunaEstr;
+          var linhaIndex = Math.trunc(linha - borderDist + linhaEstr);
+          var colunaIndex = Math.trunc(coluna - borderDist + colunaEstr);
 
           if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
           {
@@ -1091,6 +1092,7 @@ function applyDilationMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize)
 function applyMorphologicalGradientMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize) {
   //Copia o valor da matriz para nao modificar a original
   var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+  var structuringElement = constructStructuringElement(radiusSize);
 
   // Percorre a matriz de imagem
   for(var linha = 0; linha < imgHeight; linha++)
@@ -1107,8 +1109,8 @@ function applyMorphologicalGradientMatrix(imgMatrixOriginal, imgWidth, imgHeight
         for(var colunaEstr = 0; colunaEstr < 2 * radiusSize; colunaEstr++)
         {
           var borderDist = (radiusSize - 1) / 2;
-          var linhaIndex = linha - borderDist + linhaEstr;
-          var colunaIndex = coluna - borderDist + colunaEstr;
+          var linhaIndex = Math.trunc(linha - borderDist + linhaEstr);
+          var colunaIndex = Math.trunc(coluna - borderDist + colunaEstr);
 
           if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
           {
@@ -1128,4 +1130,43 @@ function applyMorphologicalGradientMatrix(imgMatrixOriginal, imgWidth, imgHeight
     }
   } 
   return imgMatrix;
+}
+
+function constructStructuringElement(radiusSize) {
+  var structuringElement = [];
+
+  switch(radiusSize) {
+    case 1:
+      structuringElement.push([255, 255]);
+      structuringElement.push([255, 255]);
+      break;
+    case 1.5:
+      structuringElement.push([0,   255,  0]);
+      structuringElement.push([255, 255, 255]);
+      structuringElement.push([0,   255,  0]);
+      break;
+    case 2:
+      structuringElement.push([ 0,  255, 255,  0]);
+      structuringElement.push([255, 255, 255, 255]);
+      structuringElement.push([255, 255, 255, 255]);
+      structuringElement.push([ 0,  255, 255,  0]);
+      break;
+    case 2.5:
+      structuringElement.push([ 0,   0,  255,  0,   0]);
+      structuringElement.push([ 0,  255, 255, 255,  0]);
+      structuringElement.push([255, 255, 255, 255, 255]);
+      structuringElement.push([ 0,  255, 255, 255,  0]);
+      structuringElement.push([ 0,   0,  255,  0,   0]);
+      break;
+    case 3:
+      structuringElement.push([ 0,   0,  255, 255,  0,   0]);
+      structuringElement.push([ 0,  255, 255, 255, 255,  0]);
+      structuringElement.push([255, 255, 255, 255, 255, 255]);
+      structuringElement.push([255, 255, 255, 255, 255, 255]);
+      structuringElement.push([ 0,  255, 255, 255, 255,  0]);
+      structuringElement.push([ 0,   0,  255, 255,  0,   0]);
+      break;
+  }
+
+  return structuringElement;
 }

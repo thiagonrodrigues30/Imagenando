@@ -1085,15 +1085,16 @@ function configErosionInputs() {
   var pRaio = document.createElement("p");
   pRaio.classList.add("params-text");
   pRaio.id = "radius-text-erosion";
-  pRaio.textContent = "Raio do Elemento Estruturante: 0";
+  pRaio.textContent = "Raio do Elemento Estruturante: 1";
 
   // Cria o range para input da intensidade
   var inputRaio = document.createElement("input");
   inputRaio.type = "range";
   inputRaio.classList.add("slider");
-  inputRaio.min = "0";
-  inputRaio.value = "0";
-  inputRaio.step = "1";
+  inputRaio.min = "1";
+  inputRaio.value = "1";
+  inputRaio.step = "0.5";
+  inputRaio.max = "3";
   inputRaio.id = "radius-erosion";
 
   inputRaio.oninput = function() {
@@ -1135,15 +1136,16 @@ function configDilationInputs() {
   var pRaio = document.createElement("p");
   pRaio.classList.add("params-text");
   pRaio.id = "radius-text-dilation";
-  pRaio.textContent = "Raio do Elemento Estruturante: 0";
+  pRaio.textContent = "Raio do Elemento Estruturante: 1";
 
   // Cria o range para input da intensidade
   var inputRaio = document.createElement("input");
   inputRaio.type = "range";
   inputRaio.classList.add("slider");
-  inputRaio.min = "0";
-  inputRaio.value = "0";
-  inputRaio.step = "1";
+  inputRaio.min = "1";
+  inputRaio.max = "3";
+  inputRaio.value = "1";
+  inputRaio.step = "0.5";
   inputRaio.id = "radius-dilation";
 
   inputRaio.oninput = function() {
@@ -1185,15 +1187,16 @@ function configMorphologicalGradientInputs() {
   var pRaio = document.createElement("p");
   pRaio.classList.add("params-text");
   pRaio.id = "radius-text-morphological-gradient";
-  pRaio.textContent = "Raio do Elemento Estruturante: 0";
+  pRaio.textContent = "Raio do Elemento Estruturante: 1";
 
   // Cria o range para input da intensidade
   var inputRaio = document.createElement("input");
   inputRaio.type = "range";
   inputRaio.classList.add("slider");
-  inputRaio.min = "0";
-  inputRaio.value = "0";
-  inputRaio.step = "1";
+  inputRaio.min = "1";
+  inputRaio.max = "3";
+  inputRaio.value = "1";
+  inputRaio.step = "0.5";
   inputRaio.id = "radius-morphological-gradient";
 
   inputRaio.oninput = function() {
