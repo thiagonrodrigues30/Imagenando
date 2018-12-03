@@ -965,3 +965,54 @@ function setWaveletFilter() {
   ctx.putImageData(newImgData, 0, 0);
   setHistogram();
 }
+
+function setErosionFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("erosion-item");
+
+  var raioSize = document.getElementById("radius-erosion").value;
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyErosionMatrix(imgMatrixOriginal, imgWidth, imgHeight, raioSize);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function setDilationFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("dilation-item");
+
+  var raioSize = document.getElementById("radius-dilation").value;
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyDilationMatrix(imgMatrixOriginal, imgWidth, imgHeight, raioSize);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}
+
+function setMorphologicalGradientFilter(){
+
+  // Limpa o background dos filtros anteriores e seta nesse
+  setFilterButtonBackground("morphological-gradient-item");
+
+  var raioSize = document.getElementById("radius-morphological-gradient").value;
+
+  // Calcula a nova matriz e aplica o filtro
+  var newMatrix = applyMorphologicalGradientMatrix(imgMatrixOriginal, imgWidth, imgHeight, raioSize);
+  currentMatrix = newMatrix;
+
+  var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+  setHistogram();
+}

@@ -1003,3 +1003,129 @@ function isFinished(imgMatrixAnterior, imgMatrixNova, imgWidthBegin, imgWidthEnd
   }
 
 }
+
+function applyErosionMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var elementsR = [];
+      var elementsG = [];
+      var elementsB = [];
+
+      // Percorre o elemento estruturante
+      for(var linhaEstr = 0; linhaEstr < 2 * radiusSize; linhaEstr++)
+      {
+        for(var colunaEstr = 0; colunaEstr < 2 * radiusSize; colunaEstr++)
+        {
+          var borderDist = (radiusSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaEstr;
+          var colunaIndex = coluna - borderDist + colunaEstr;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            elementsR.push(currentPixel.r);
+            elementsG.push(currentPixel.g);
+            elementsB.push(currentPixel.b);
+          }
+        }
+      }
+
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = Math.min.apply(null, elementsR);
+      currentPixel.g = Math.min.apply(null, elementsG);
+      currentPixel.b = Math.min.apply(null, elementsB);
+    }
+  } 
+  return imgMatrix;
+}
+
+function applyDilationMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var elementsR = [];
+      var elementsG = [];
+      var elementsB = [];
+
+      // Percorre o elemento estruturante
+      for(var linhaEstr = 0; linhaEstr < 2 * radiusSize; linhaEstr++)
+      {
+        for(var colunaEstr = 0; colunaEstr < 2 * radiusSize; colunaEstr++)
+        {
+          var borderDist = (radiusSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaEstr;
+          var colunaIndex = coluna - borderDist + colunaEstr;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            elementsR.push(currentPixel.r);
+            elementsG.push(currentPixel.g);
+            elementsB.push(currentPixel.b);
+          }
+        }
+      }
+
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = Math.max.apply(null, elementsR);
+      currentPixel.g = Math.max.apply(null, elementsG);
+      currentPixel.b = Math.max.apply(null, elementsB);
+    }
+  } 
+  return imgMatrix;
+}
+
+function applyMorphologicalGradientMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize) {
+  //Copia o valor da matriz para nao modificar a original
+  var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+
+  // Percorre a matriz de imagem
+  for(var linha = 0; linha < imgHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imgWidth; coluna++)
+    {
+      var elementsR = [];
+      var elementsG = [];
+      var elementsB = [];
+
+      // Percorre o elemento estruturante
+      for(var linhaEstr = 0; linhaEstr < 2 * radiusSize; linhaEstr++)
+      {
+        for(var colunaEstr = 0; colunaEstr < 2 * radiusSize; colunaEstr++)
+        {
+          var borderDist = (radiusSize - 1) / 2;
+          var linhaIndex = linha - borderDist + linhaEstr;
+          var colunaIndex = coluna - borderDist + colunaEstr;
+
+          if(linhaIndex >= 0 && linhaIndex < imgHeight && colunaIndex >= 0 && colunaIndex < imgWidth)
+          {
+            var currentPixel = imgMatrixOriginal[linhaIndex][colunaIndex];
+
+            elementsR.push(currentPixel.r);
+            elementsG.push(currentPixel.g);
+            elementsB.push(currentPixel.b);
+          }
+        }
+      }
+
+      var currentPixel = imgMatrix[linha][coluna];
+      currentPixel.r = Math.max.apply(null, elementsR) - Math.min.apply(null, elementsR);
+      currentPixel.g = Math.max.apply(null, elementsG) - Math.min.apply(null, elementsG);
+      currentPixel.b = Math.max.apply(null, elementsB) - Math.min.apply(null, elementsB);
+    }
+  } 
+  return imgMatrix;
+}

@@ -1073,3 +1073,154 @@ function configMidpointInputs() {
 
   inputsContainer.appendChild(center);
 }
+
+function configErosionInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("erosion-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pRaio = document.createElement("p");
+  pRaio.classList.add("params-text");
+  pRaio.id = "radius-text-erosion";
+  pRaio.textContent = "Raio do Elemento Estruturante: 0";
+
+  // Cria o range para input da intensidade
+  var inputRaio = document.createElement("input");
+  inputRaio.type = "range";
+  inputRaio.classList.add("slider");
+  inputRaio.min = "0";
+  inputRaio.value = "0";
+  inputRaio.step = "1";
+  inputRaio.id = "radius-erosion";
+
+  inputRaio.oninput = function() {
+    pRaio.textContent = "Raio do Elemento Estruturante: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnErosionPreview = document.createElement("input");
+  btnErosionPreview.type = "button";
+  btnErosionPreview.classList.add("btn")
+  btnErosionPreview.classList.add("btn-default");
+  btnErosionPreview.value = "Preview";
+
+  btnErosionPreview.onclick = function () {
+    setErosionFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pRaio);
+  inputsContainer.appendChild(inputRaio);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnErosionPreview);
+
+  inputsContainer.appendChild(center);
+}
+
+function configDilationInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("dilation-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pRaio = document.createElement("p");
+  pRaio.classList.add("params-text");
+  pRaio.id = "radius-text-dilation";
+  pRaio.textContent = "Raio do Elemento Estruturante: 0";
+
+  // Cria o range para input da intensidade
+  var inputRaio = document.createElement("input");
+  inputRaio.type = "range";
+  inputRaio.classList.add("slider");
+  inputRaio.min = "0";
+  inputRaio.value = "0";
+  inputRaio.step = "1";
+  inputRaio.id = "radius-dilation";
+
+  inputRaio.oninput = function() {
+    pRaio.textContent = "Raio do Elemento Estruturante: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnDilationPreview = document.createElement("input");
+  btnDilationPreview.type = "button";
+  btnDilationPreview.classList.add("btn")
+  btnDilationPreview.classList.add("btn-default");
+  btnDilationPreview.value = "Preview";
+
+  btnDilationPreview.onclick = function () {
+    setDilationFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pRaio);
+  inputsContainer.appendChild(inputRaio);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnDilationPreview);
+
+  inputsContainer.appendChild(center);
+}
+
+function configMorphologicalGradientInputs() {
+
+  // Exibe o icone de filtro no filtro que esta com os parametros sendo exbidos
+  setParamsIcon("morphological-gradient-icon");
+  
+  var inputsContainer = document.getElementById("inputs-container");
+
+  // Cria o elemento p de label do input intensidade
+  var pRaio = document.createElement("p");
+  pRaio.classList.add("params-text");
+  pRaio.id = "radius-text-morphological-gradient";
+  pRaio.textContent = "Raio do Elemento Estruturante: 0";
+
+  // Cria o range para input da intensidade
+  var inputRaio = document.createElement("input");
+  inputRaio.type = "range";
+  inputRaio.classList.add("slider");
+  inputRaio.min = "0";
+  inputRaio.value = "0";
+  inputRaio.step = "1";
+  inputRaio.id = "radius-morphological-gradient";
+
+  inputRaio.oninput = function() {
+    pRaio.textContent = "Raio do Elemento Estruturante: " + this.value;
+  }
+
+  // Cria o botão que ativa o preview do filtro
+  var btnMorphologicalGradientPreview = document.createElement("input");
+  btnMorphologicalGradientPreview.type = "button";
+  btnMorphologicalGradientPreview.classList.add("btn")
+  btnMorphologicalGradientPreview.classList.add("btn-default");
+  btnMorphologicalGradientPreview.value = "Preview";
+
+  btnMorphologicalGradientPreview.onclick = function () {
+    setMorphologicalGradientFilter();
+  }
+
+
+  // Insere os elementos criados no container dos inputs
+  inputsContainer.appendChild(pRaio);
+  inputsContainer.appendChild(inputRaio);
+  inputsContainer.appendChild(document.createElement("br"));
+  inputsContainer.appendChild(document.createElement("br"));
+
+  var center = document.createElement("center");
+  center.appendChild(btnMorphologicalGradientPreview);
+
+  inputsContainer.appendChild(center);
+}
+
