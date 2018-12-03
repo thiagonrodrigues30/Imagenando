@@ -1050,6 +1050,7 @@ function applyErosionMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize) 
 function applyDilationMatrix(imgMatrixOriginal, imgWidth, imgHeight, radiusSize) {
   //Copia o valor da matriz para nao modificar a original
   var imgMatrix = JSON.parse(JSON.stringify(imgMatrixOriginal));
+  var structuringElement = constructStructuringElement(radiusSize);
 
   // Percorre a matriz de imagem
   for(var linha = 0; linha < imgHeight; linha++)
