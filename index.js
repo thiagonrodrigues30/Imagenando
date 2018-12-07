@@ -28,6 +28,9 @@ paramsIcon.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf
 // Compression parameters
 var coefComprWavelet = 9;
 
+// Fourier
+var fourierMatrix;
+
 
 // Carrega a imagem pela primeira vez
 function loadImage(input){
@@ -181,7 +184,7 @@ function setLogFilter(){
   // Pega o valor dos inputs
   var intensidadeLog = document.getElementById("intensidade-log").value;
 
-  var newMatrix = applyLogFilterMatrix(imgMatrixOriginal, imgWidth, imgHeight, intensidadeLog);
+  var newMatrix = applyLogFilterMatrix(currentMatrix, imgWidth, imgHeight, intensidadeLog);
   currentMatrix = newMatrix;
 
   var newImgData = parseToImageData(newMatrix, imgWidth, imgHeight);
@@ -890,6 +893,7 @@ function setFuncao() {
     document.getElementById("image-subtraction-container").style.display = "none";
     document.getElementById("chroma-key-container").style.display = "none";
     document.getElementById("compression-container").style.display = "none";
+    document.getElementById("fft-container").style.display = "none";
   }
   else if(op == "cores")
   {
@@ -899,6 +903,7 @@ function setFuncao() {
     document.getElementById("image-subtraction-container").style.display = "none";
     document.getElementById("chroma-key-container").style.display = "none";
     document.getElementById("compression-container").style.display = "none";
+    document.getElementById("fft-container").style.display = "none";
   }
   else if(op == "img-sub")
   {
@@ -908,6 +913,7 @@ function setFuncao() {
     document.getElementById("filtros-container").style.display = "none";
     document.getElementById("chroma-key-container").style.display = "none";
     document.getElementById("compression-container").style.display = "none";
+    document.getElementById("fft-container").style.display = "none";
   }
   else if(op == "chroma-key")
   {
@@ -917,10 +923,22 @@ function setFuncao() {
     document.getElementById("color-show-container").style.display = "none";
     document.getElementById("filtros-container").style.display = "none";
     document.getElementById("compression-container").style.display = "none";
+    document.getElementById("fft-container").style.display = "none";
   }
   else if(op == "compression")
   {
     document.getElementById("compression-container").style.display = "block";
+    document.getElementById("chroma-key-container").style.display = "none";
+    document.getElementById("image-subtraction-container").style.display = "none";
+    document.getElementById("color-container").style.display = "none";
+    document.getElementById("color-show-container").style.display = "none";
+    document.getElementById("filtros-container").style.display = "none";
+    document.getElementById("fft-container").style.display = "none";
+  }
+  else if(op == "fourier")
+  {
+    document.getElementById("fft-container").style.display = "block";
+    document.getElementById("compression-container").style.display = "none";
     document.getElementById("chroma-key-container").style.display = "none";
     document.getElementById("image-subtraction-container").style.display = "none";
     document.getElementById("color-container").style.display = "none";

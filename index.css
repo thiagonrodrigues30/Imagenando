@@ -215,3 +215,8 @@ body {
 	width: 100%;
 	display: none;
 }
+
+#fft-container {
+	width: 100%;
+	display: none;
+}

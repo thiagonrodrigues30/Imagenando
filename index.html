@@ -58,6 +58,7 @@
                   <option value="img-sub">Subtração de Imagens</option>
                   <option value="chroma-key">Chroma Key</option>
                   <option value="compression">Compressão de Imagens</option>
+                  <option value="fourier">Transformada de Fourier</option>
                 </select>
               </h5>
               </center>
@@ -324,6 +325,25 @@
             </center><br>
 
           </div>
+
+          <div id="fft-container">
+            
+            <center>
+              <h5><strong>Transformada de Fourier</strong></h5>
+            </center><br>
+
+
+            <br><br>
+            <center>
+              <input type="button" class="btn btn-default" value="Espacial --> Frequencia" onclick="espToFreq()" >
+            </center>
+
+            <br><br>
+            <center>
+              <input type="button" class="btn btn-default" value="Frequencia --> Espacial" onclick="freqToEsp()" >
+            </center>
+
+          </div>
   
         </div>
 
@@ -337,6 +357,8 @@
     <script src="inputs.js"></script>
     <script src="colorComponents.js"></script>
     <script src="otherFunctions.js"></script>
+    <script src="complex.js"></script>
+    <script src="fft.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
